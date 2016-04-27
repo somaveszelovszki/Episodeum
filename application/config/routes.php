@@ -40,6 +40,9 @@
 
 $route['default_controller'] = "MainController";
 $route['404_override'] = '';
+$route['([^\\/]*)'] = 'index.php?/$1Controller';
+$route['([^\\/]*)\\/([^\\/]*)'] = '$1Controller/$2Action';
+$route['([^\\/]*)\\/([^\\/]*)\\/(.*)'] = '$1Controller/$2Action/$3';
 
 
 /* End of file routes.php */

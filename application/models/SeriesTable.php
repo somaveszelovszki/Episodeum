@@ -4,7 +4,26 @@
  * Created by Soma Veszelovszki <soma.veszelovszki@gmail.com> on 2016-04-23.
  */
 
+namespace Model;
+
 class SeriesTable extends TableModel {
+
+    const TABLE_NAME = 'series';
+
+    /**
+     * Applies query filters (WHERE, LIMIT, ORDER BY)
+     * @param array $filters
+     * @param null $order
+     * @param null $limit
+     */
+    protected function _applyFilters(array $filters = [], $order = self::ORDER_NONE, $limit = null) {
+        /* Applies filters */
+        if (isset($filters['title'])) {
+            $this->db->like("main_table.title", $filters['title']);
+        }
+
+        parent::_applyFilters($filters, $order, $limit);
+    }
 
     protected function _rowToModel($row){
         return new Series([

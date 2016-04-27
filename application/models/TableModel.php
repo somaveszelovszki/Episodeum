@@ -4,7 +4,7 @@
  * Created by Soma Veszelovszki <soma.veszelovszki@gmail.com> on 2016-04-23.
  */
 
-namespace Episodeum\Model;
+namespace Model;
 
 abstract class TableModel {
 
@@ -16,20 +16,17 @@ abstract class TableModel {
     /**
      * @var TableModel The reference to TableModel instance of this class
      */
-    private static $instance;
+    private static $_instances = [];
 
     /**
-     * Returns the TableModel instance of this class.
-     *
-     * @return TableModel The TableModel instance.
+     * Makes this class usable as a Singleton.
      */
-    public static function getInstance()
-    {
-        if (null === static::$instance) {
-            static::$instance = new static();
+    public static function getInstance() {
+        $className = get_called_class();
+        if (!isset(self::$_instances[$className])) {
+            self::$_instances[$className] = new $className();
         }
-
-        return static::$instance;
+        return self::$_instances[$className];
     }
 
     /**
@@ -61,6 +58,18 @@ abstract class TableModel {
     }
 
     /**
+     * Allows table models to access CI's loaded classes using the same
+     * syntax as controllers.
+     *
+     * @param  string $key
+     * @access private
+     */
+    public function __get($key) {
+        $CI = get_instance();
+        return $CI->$key;
+    }
+
+    /**
      * Gets the name of the table associated with the descendant class.
      *
      * @return string The table name.
@@ -78,6 +87,7 @@ abstract class TableModel {
      */
     public function getOne(array $filters = [], $order = self::ORDER_NONE) {
         $results = $this->getAll($filters, $order, 1);
+
         return $results ? $results[0] : null;
     }
 

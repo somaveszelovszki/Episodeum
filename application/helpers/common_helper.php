@@ -3,7 +3,6 @@
  * This file contains common php functions
  */
 
-
 /**
  * explodes full names (separated by spaces) to an array containing single names
  * e.g. 'George Example Washington' will become array('George', 'Example', 'Washington')
@@ -21,16 +20,19 @@ function explodeFullName($name) {
  * @returns string
  */
 function createURIText($text) {
-    // removes base url and 'index.php?' - with or without question mark
-    return base_url() . 'index.php?/' . str_replace(base_url(), '', preg_replace('/index\\.php(\\?)?/', '', $text));
+    // removes base url and 'index.php?/' - with or without question mark
+    return base_url() . 'index.php?/' . str_replace(base_url(), '', preg_replace('/index\\.php(\\?)?\\//', '', $text));
 }
-/**
- * @param string $dateTime - e.g. '2015-10-20 23-45-01'
- * @return bool|string date string - nice and readable for users - e.g. 'October 20 2015'
- */
-function createDateStringFromDateTime($dateTime) {
-    // first 10 characters of datetime string contains date
-    return date("F j Y", strtotime(substr($dateTime, 0, 10)));
+
+function sortArrayOfArraysByKey($array, $sortKey, $sort_order = SORT_ASC) {
+    $values = [];
+    foreach ($array as $key => $value)
+    {
+        $values[$key] = $value[$sortKey];
+    }
+    array_multisort($values, $sort_order, $array);
+
+    return $array;
 }
 
 /**
@@ -125,6 +127,14 @@ function determineAccessId($personIds) {
 }
 
 /**
+ * @param DateTime $dateTime
+ * @return string|null date string - nice and readable for users - e.g. 'October 20 2015'
+ */
+function getDateStringFromDateTime($dateTime) {
+    return $dateTime ? $dateTime->format("F j Y") : null;
+}
+
+/**
  * Converts DateTime objects to a string that can be inserted into the DB as a date
  * @param $dateTime DateTime
  * @return string date formatted so that it can be inserted into the DB as a date (e.g. '2016-04-23')
@@ -160,6 +170,13 @@ function getDateTimeFromSQLDateTime($SQLDateTime) {
     return $SQLDateTime ? getDateTimeFromSQLDate($SQLDateTime) : null;
 }
 
+function getImdbUrl($imdbId) {
+    $idPattern = '{id}';
+    $imdbUrlTemplate = 'http://www.imdb.com/title/' . $idPattern . '/';
+
+    return $imdbId ? str_replace($idPattern, $imdbId, $imdbUrlTemplate) : null;
+}
+
 function numberStringsToNumbers ($object) {
     if (!is_array($object)) {
         return $object;
@@ -180,4 +197,33 @@ function numberStringsToNumbers ($object) {
         }
     }
     return $object;
+}
+
+function getNumberInSeparatedFormat($number){
+    return number_format($number, 2, '.', ' ');
+}
+
+function getNumberInReadableFormat($number) {
+    if (gettype($number) == 'integer') {
+        if ($number < 1000) {
+            return $number;
+        }
+
+        if ($number < 1000000) {
+            return getNumberInSeparatedFormat($number/1000) . ' thousand';
+        }
+
+        if ($number < 1000000000) {
+            return getNumberInSeparatedFormat($number/1000000) . ' million';
+        }
+
+        if ($number < 1000000000000) {
+            return getNumberInSeparatedFormat($number/1000000000) . ' billion';
+        }
+
+        if ($number < 1000000000000000) {
+            return getNumberInSeparatedFormat($number/1000000000000) . ' trillion';
+        }
+    }
+    return null;
 }

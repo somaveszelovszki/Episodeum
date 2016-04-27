@@ -4,10 +4,14 @@
  * Created by Soma Veszelovszki <soma.veszelovszki@gmail.com> on 2016-04-23.
  */
 
+namespace Model;
+
 class GenreTable extends TableModel {
 
+    const TABLE_NAME = 'genre';
+
     protected function _rowToModel($row){
-        return new GenreTable([
+        return new Genre([
             'id'    =>  (int) $row->id,
             'name'  =>  $row->name
         ]);

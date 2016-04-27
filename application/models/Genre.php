@@ -4,6 +4,8 @@
  * Created by Soma Veszelovszki <soma.veszelovszki@gmail.com> on 2016-04-23.
  */
 
+namespace Model;
+
 class Genre extends Model {
 
     protected $_name;

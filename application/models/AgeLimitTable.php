@@ -4,13 +4,11 @@
  * Created by Soma Veszelovszki <soma.veszelovszki@gmail.com> on 2016-04-23.
  */
 
-namespace Episodeum\Model;
-
-use Episodeum\Model\TableModel;
-
-require('TableModel.php');
+namespace Model;
 
 class AgeLimitTable extends TableModel {
+
+    const TABLE_NAME = 'age_limit';
 
     protected function _rowToModel($row){
         return new AgeLimit([

@@ -1,10 +1,152 @@
+/* CONSTANTS */
+@COLOR_LIGHTGREY: #f1f3fe;
+@COLOR_LIGHT_ORANGE: #f4e2c3;
+@COLOR_DARKGREY: #242728;
+@COLOR_TEXT: @COLOR_DARKGREY;
+@COLOR_LIGHTGREEN: #e1f9e2;
+@COLOR_GREEN: #87e88b;
+@COLOR_DARK_GREEN: #1b9419;
+
+@HEADER_HEIGHT:60px;
+@FOOTER_HEIGHT:100px;
+
+body {
+  color: @COLOR_TEXT;
+  width:100%;
+  height:100%;
+}
+
+.wrapper {
+  padding-top: @HEADER_HEIGHT;
+  padding-bottom: @FOOTER_HEIGHT;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+.content {
+  min-height: 100%;
+}
+
+header {
+  margin-top: -@HEADER_HEIGHT;
+  height: @HEADER_HEIGHT;
+}
+
+footer {
+  margin-bottom: -@FOOTER_HEIGHT;
+  height: @FOOTER_HEIGHT;
+  .persons-data {
+    width: 60%;
+    margin: 0 auto 0 auto;
+    td {
+      width:50%;
+    }
+  }
+}
+
+header, footer {
+  background-color: @COLOR_LIGHT_ORANGE;
+  width:100%;
+}
+
 .page-selector {
+  display: inline-block;
   width: 100px;
-  height: 60px;
-  padding: 15px;
-  margin: 30px;
-  border: 1px solid lightgreen;
+  height: 50px;
+  margin: 0;
+  border: 1px solid @COLOR_GREEN;
   border-radius: 5px;
+  > a {
+    text-align:center;
+    display:block;
+    height:100%;
+    padding: 15px;
+  }
+}
+
+input[type="radio"] {
+  margin-right: 20px;
+}
+
+.page-anchor {
+  color: @COLOR_DARK_GREEN;
   text-decoration: none;
-  color: #000000;
+}
+
+.tabs-list {
+  width: fit-content;
+  margin: 0 auto 0 auto;
+
+  .tab-element {
+    display: inline-block;
+    margin: 5px;
+  }
+}
+
+.list-container {
+  width:50%;
+  margin: 10px auto 10px auto;
+
+  .list {
+    width:100%;
+    list-style-type: none;
+    padding: 0;
+
+    > .list-element {
+      &:nth-child(even) {
+        background-color: @COLOR_LIGHTGREEN;
+      }
+      width:100%;
+      margin: 5px;
+
+    }
+  }
+}
+
+.message-section {
+  border: 1px solid @COLOR_DARKGREY;
+  border-radius: 5px;
+  width:50%;
+  margin: 20px auto 20px auto;
+  padding:20px;
+}
+
+.data-section {
+  width: 50%;
+  &.mid-wide {
+    width: 75%;
+  }
+  margin: 0 auto 0 auto;
+}
+
+.data-container {
+  border: 1px solid @COLOR_DARKGREY;
+  border-radius: 5px;
+  width:100%;
+  margin: 10px auto 10px auto;
+
+
+  .data-table {
+    width:100%;
+    table-layout: fixed;
+    tr {
+      width:100%;
+      vertical-align: middle;
+
+      &.title-row {
+        height: 2rem;
+        font-weight: bold;
+        text-align: center;
+      }
+      &.data-row {
+        &.not-needed {
+          display: none;
+        }
+      }
+    }
+  }
+
 }

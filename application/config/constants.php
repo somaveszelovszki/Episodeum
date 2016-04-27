@@ -40,7 +40,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
  * -----------------------------------------------------------------------
  */
 
-define('WEBPAGE_NAME', 'Episodeum');
-
+define('_WEBPAGE_NAME', 'Episodeum');
+define('_UNKNOWN', 'Unknown');
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

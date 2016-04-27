@@ -4,7 +4,11 @@
  * Created by Soma Veszelovszki <soma.veszelovszki@gmail.com> on 2016-04-23.
  */
 
+namespace Model;
+
 class CountryTable extends TableModel {
+
+    const TABLE_NAME = 'country';
 
     protected function _rowToModel($row){
         return new Country([
