@@ -45,7 +45,7 @@
                                                 <?php foreach($person->getSeriesContributionsWithSeriesData() as $con) : ?>
                                                     <tr>
                                                         <td>
-                                                            <a class="page-anchor" href="<?= createURIText('series/data/' . $con['series']->getId()) ?>">
+                                                            <a class="page-anchor" href="<?= createURIText('series/edit/' . $con['series']->getId()) ?>">
                                                                 <b><?= $con['series']->getTitle() ?></b>
                                                             </a>
                                                         </td>

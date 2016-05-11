@@ -16,6 +16,17 @@ body {
   height:100%;
 }
 
+input[type="text"] {
+  width: 100%;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  min-width: 0;
+}
+
 .wrapper {
   padding-top: @HEADER_HEIGHT;
   padding-bottom: @FOOTER_HEIGHT;
@@ -30,9 +41,20 @@ body {
   min-height: 100%;
 }
 
+.left {
+  float:left;
+}
+.right {
+  float: right;
+}
+
 header {
   margin-top: -@HEADER_HEIGHT;
   height: @HEADER_HEIGHT;
+}
+
+.main-logo {
+  margin: 5px 30px 5px 30px;
 }
 
 footer {
@@ -65,6 +87,10 @@ header, footer {
     height:100%;
     padding: 15px;
   }
+}
+
+.searchSubjectSelectorLabel {
+  margin-left:20px;
 }
 
 input[type="radio"] {
@@ -141,12 +167,6 @@ input[type="radio"] {
         font-weight: bold;
         text-align: center;
       }
-      &.data-row {
-        &.not-needed {
-          display: none;
-        }
-      }
     }
   }
-
 }

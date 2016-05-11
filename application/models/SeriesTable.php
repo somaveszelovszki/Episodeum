@@ -30,12 +30,12 @@ class SeriesTable extends TableModel {
             'id'            =>  (int) $row->id,
             'imdbId'        =>  $row->imdb_id ? $row->imdb_id : null,
             'title'         =>  $row->title,
-            'ageLimitId'    =>  $row->age_limit_id ? $row->age_limit_id : null,
+            'ageLimitId'    =>  $row->age_limit_id,
             'genreId'       =>  $row->genre_id,
             'isOnProgram'   =>  $row->is_on_program ? $row->is_on_program : null,
             'showTime'      =>  $row->show_time ? $row->show_time : null,
             'viewNumber'    =>  $row->view_number ? $row->view_number : null,
-            'countryId'     =>  $row->country_id ? $row->country_id : null
+            'countryId'     =>  $row->country_id
         ]);
     }
 
@@ -43,7 +43,7 @@ class SeriesTable extends TableModel {
      * @param Series $series
      * @return array
      */
-    protected function _modelToRow($series)
+    public function _modelToRow($series)
     {
         return [
             'id'            =>  $series->getId(),
@@ -52,7 +52,7 @@ class SeriesTable extends TableModel {
             'age_limit_id'  =>  $series->getAgeLimitId(),
             'genre_id'      =>  $series->getGenreId(),
             'is_on_program' =>  $series->getIsOnProgram(),
-            'show_time'     =>  $series->getShowTime(),
+            'show_time'     =>  getSQLDateTimeFromDateTime($series->getShowTime()),
             'view_number'   =>  $series->getViewNumber(),
             'country_id'    =>  $series->getCountryId()
         ];

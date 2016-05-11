@@ -18,7 +18,7 @@
                         <?php foreach($personList as $person) : ?>
                             <li class="list-element">
                                 <div class="data-container">
-                                    <a class="page-anchor" href="<?= createURIText('person/data/' . $person->getId()) ?>">
+                                    <a class="page-anchor" href="<?= createURIText('person/edit/' . $person->getId()) ?>">
                                         <table class="data-table" data-id="<?= $person->getId() ?>">
                                             <tr class="title-row">
                                                 <td colspan="3">

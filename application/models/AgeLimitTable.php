@@ -21,7 +21,7 @@ class AgeLimitTable extends TableModel {
      * @param AgeLimit $ageLimit
      * @return array
      */
-    protected function _modelToRow($ageLimit)
+    public function _modelToRow($ageLimit)
     {
         return [
             'id' => $ageLimit->getId(),

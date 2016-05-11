@@ -41,7 +41,7 @@ class PersonTable extends TableModel {
      * @param Person $person
      * @return array
      */
-    protected function _modelToRow($person)
+    public function _modelToRow($person)
     {
         return [
             'id'            =>  $person->getId(),

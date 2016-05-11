@@ -18,9 +18,9 @@
                             <tr class="data-row">
                                 <td><input type="text" name="searchText" /></td>
                                 <td>
-                                    <label for="personRadioButton">Person</label>
+                                    <label class="searchSubjectSelectorLabel" for="personRadioButton">Person</label>
                                     <input class="searchSubjectSelector" id="personRadioButton" type="radio" name="subject" value="person" checked />
-                                    <label for="seriesRadioButton">Series</label>
+                                    <label class="searchSubjectSelectorLabel" for="seriesRadioButton">Series</label>
                                     <input class="searchSubjectSelector" id="seriesRadioButton" type="radio" name="subject" value="series" />
                                 </td>
                             </tr>

@@ -113,6 +113,22 @@ abstract class TableModel {
     }
 
     /**
+     * @param array $filters associative array of filters. Keys are strings, values are the values to filter for.
+     *        Filters (keys-value pairs) supported at the moment:
+     *             - "id"              => int|array Only deletes rows with the specified id(s).
+     * @return boolean True on success, false on failure
+     */
+    public function delete(array $filters = []) {
+        /* Applies filters */
+        if (isset($filters['id'])) {
+            $this->db->where_in('id', is_array($filters['id']) ? $filters['id'] : array((int) $filters['id']));
+        }
+        /* Deletes records */
+        return $this->db->delete(static::TABLE_NAME);
+    }
+
+
+    /**
      * Applies query filters (WHERE, LIMIT, ORDER BY)
      * @param array $filters
      * @param null $order

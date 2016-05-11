@@ -4,6 +4,15 @@ body {
   width: 100%;
   height: 100%;
 }
+input[type="text"] {
+  width: 100%;
+}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  min-width: 0;
+}
 .wrapper {
   padding-top: 60px;
   padding-bottom: 100px;
@@ -16,9 +25,18 @@ body {
 .content {
   min-height: 100%;
 }
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
 header {
   margin-top: -60px;
   height: 60px;
+}
+.main-logo {
+  margin: 5px 30px 5px 30px;
 }
 footer {
   margin-bottom: -100px;
@@ -49,6 +67,9 @@ footer {
   display: block;
   height: 100%;
   padding: 15px;
+}
+.searchSubjectSelectorLabel {
+  margin-left: 20px;
 }
 input[type="radio"] {
   margin-right: 20px;
@@ -113,7 +134,4 @@ input[type="radio"] {
   height: 2rem;
   font-weight: bold;
   text-align: center;
-}
-.data-container .data-table tr.data-row.not-needed {
-  display: none;
 }

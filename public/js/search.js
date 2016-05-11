@@ -20,6 +20,7 @@ car.search = {
                     return;
             }
             $('#searchForm').attr('action', postMethod);
+            console.log($('#searchForm').attr('action', postMethod));
         }
     },
 

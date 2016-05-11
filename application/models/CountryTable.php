@@ -22,7 +22,7 @@ class CountryTable extends TableModel {
      * @param Country $country
      * @return array
      */
-    protected function _modelToRow($country)
+    public function _modelToRow($country)
     {
         return [
             'id'            =>  $country->getId(),

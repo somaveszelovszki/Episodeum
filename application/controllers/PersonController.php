@@ -37,7 +37,7 @@ class PersonController extends CI_Controller {
         ]);
     }
 
-    public function dataAction($personId = null)
+    public function editAction($personId = null)
     {
         if (!$personId) {
             $errorMessage = "Actor id missing.";
@@ -62,6 +62,10 @@ class PersonController extends CI_Controller {
         $searchText = $this->input->post('searchText');
         $personList = \Model\PersonTable::getInstance()->getAll(['name' => $searchText]);
 
-        $this->listAction($personList, true);
+        if ($personList && count($personList) == 1) {
+            $this->editAction($personList[0]->getId());
+        } else {
+            $this->listAction($personList, true);
+        }
     }
 }

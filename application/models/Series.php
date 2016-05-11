@@ -85,6 +85,14 @@ class Series extends Model {
         return $this->_showTime ? $this->_showTime->format("l, H:i") : null;
     }
 
+    public function getShowTimeDayId(){
+        return $this->_showTime ? $this->_showTime->format('w') : null;
+    }
+
+    public function getShowTimeInTimeFormat(){
+        return $this->_showTime ? $this->_showTime->format('H:i') : null;
+    }
+
     public function setShowTime($showTime) {
         $this->_showTime = getDateTimeFromSQLDateTime($showTime);
     }

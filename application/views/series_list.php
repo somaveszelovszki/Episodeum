@@ -18,7 +18,7 @@
                         <?php foreach($seriesList as $series) : ?>
                             <li class="list-element">
                                 <div class="data-container">
-                                    <a class="page-anchor" href="<?= createURIText('series/data/' . $series->getId()) ?>">
+                                    <a class="page-anchor" href="<?= createURIText('series/edit/' . $series->getId()) ?>">
                                         <table class="data-table" data-id="<?= $series->getId() ?>">
                                             <tr class="title-row">
                                                 <td colspan="3">

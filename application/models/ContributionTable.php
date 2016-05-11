@@ -21,7 +21,7 @@ class ContributionTable extends TableModel {
      * @param Contribution $contribution
      * @return array
      */
-    protected function _modelToRow($contribution)
+    public function _modelToRow($contribution)
     {
         return [
             'id'    => $contribution->getId(),

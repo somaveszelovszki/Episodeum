@@ -1,6 +1,6 @@
 <script>
     var car = {};	// Defines car namespace
-    car.baseUrl = '<?=base_url()?>';
+    car.BASE_URL = '<?=base_url()?>';
 </script>
 
 <meta charset="UTF-8">
