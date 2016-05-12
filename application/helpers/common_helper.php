@@ -227,3 +227,7 @@ function getNumberInReadableFormat($number) {
     }
     return null;
 }
+
+function isImdbIdValid($imdbId) {
+    return !empty($imdbId) && gettype($imdbId) === 'string' && strlen($imdbId) == 9 && substr($imdbId, 0, 2) === "tt";
+}

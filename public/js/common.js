@@ -70,3 +70,27 @@ function getDateStringFromDate(date) {
             date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() : null;
 
 }
+
+function isImdbIdValid(imdbId) {
+    return imdbId != null && typeof imdbId === 'string' && imdbId.length == 9 && imdbId.startsWith("tt");
+}
+
+/**
+ * Determines if variable is empty
+ * @param variable
+ * @returns {boolean}
+ */
+function isEmpty(variable) {
+    if (variable == null || variable == 'undefined'  || variable == '') {	// '==null' is true if variable is undefined
+        return true;
+    }
+    if (typeof variable === 'object') {		// if variable is an object, its length determines if it's empty
+        return variable.length == 0;
+    }
+
+    if (variable === 'datetime') {
+        return false;
+    }
+
+    return false;
+}

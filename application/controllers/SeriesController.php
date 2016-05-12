@@ -94,6 +94,14 @@ class SeriesController extends CI_Controller {
         $seriesData['showTime'] = $this->input->post('show_time');
         $seriesData['imdbId'] = $this->input->post('imdb_id');
 
+        if (!empty($seriesData['imdbId']) && !isImdbIdValid($seriesData['imdbId'])) {
+            $this->output->set_output(json_encode([
+                'success' => false,
+                'message'    => "Series cannot be saved, because IMDb id is not valid."
+            ]));
+            return;
+        }
+
         $contributions = $this->input->post('contributions');
 
         if (empty($seriesData['title'])) {

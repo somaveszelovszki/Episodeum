@@ -172,7 +172,7 @@
 
                             <?php if (($imdbId = $series->getImdbId()) != null) : ?>
                                 <tr class="data-row onView">
-                                    <td colspan="2"><a href="<?= getImdbUrl($imdbId) ?>">Check series on IMDb</a></td>
+                                    <td colspan="2"><a href="<?= getImdbUrl($imdbId) ?>">IMDb</a></td>
                                 </tr>
                             <?php endif ?>
 

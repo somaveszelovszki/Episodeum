@@ -19,20 +19,32 @@ car.series = {
 
             var dataTable = $('.series-data.data-table');
 
+            var title = dataTable.find('.title-field').val();
+            if(isEmpty(title)) {
+                alert("Title field is empty!");
+                return;
+            }
+
+            var imdbId = dataTable.find('.imdb-id-field').val();
+            if(!isImdbIdValid(imdbId)) {
+                alert("IMDb id is not valid!");
+                return;
+            }
+
             car.series.updateSeriesContributions();
 
             var showTime = getDateFromDayOfWeek(dataTable.find('.show-day-field').val(), dataTable.find('.show-time-field').val());
 
             var seriesData = {
                 id              :   car.seriesEditorData.series.id,
-                title           :   dataTable.find('.title-field').val(),
+                title           :   title,
                 country_id      :   dataTable.find('.country-field').val(),
                 genre_id        :   dataTable.find('.genre-field').val(),
                 age_limit_id    :   dataTable.find('.age-limit-field').val(),
                 view_number     :   dataTable.find('.view-number-field').val(),
                 is_on_program   :   dataTable.find('.is-on-program-selector-field:checked').val(),
                 show_time       :   getDateStringFromDate(showTime),
-                imdb_id         :   dataTable.find('.imdb-id-field').val(),
+                imdb_id         :   imdbId,
                 contributions   :   car.seriesEditorData.series.contributions
             };
 

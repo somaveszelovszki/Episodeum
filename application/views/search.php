@@ -16,15 +16,13 @@
                                 <td colspan="3">Search for person or series</td>
                             </tr>
                             <tr class="data-row">
-                                <td><input type="text" name="searchText" /></td>
+                                <td><input type="text" name="searchText" placeholder="Search for person or series..."/></td>
                                 <td>
                                     <label class="searchSubjectSelectorLabel" for="personRadioButton">Person</label>
                                     <input class="searchSubjectSelector" id="personRadioButton" type="radio" name="subject" value="person" checked />
                                     <label class="searchSubjectSelectorLabel" for="seriesRadioButton">Series</label>
                                     <input class="searchSubjectSelector" id="seriesRadioButton" type="radio" name="subject" value="series" />
                                 </td>
-                            </tr>
-                            <tr>
                                 <td><input type="submit" value="Search" name="search" /></td>
                             </tr>
                         </table>
