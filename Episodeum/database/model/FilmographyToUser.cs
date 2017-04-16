@@ -1,10 +1,13 @@
 ﻿using SQLite;
 
 namespace Episodeum.database.model {
-	[Table("Filmography_to_user")]
+	[Table("filmography_to_user")]
 	public class FilmographyToUser : Model {
-		[Column("Filmography_id")]
+		[Column("filmography_id")]
 		public int FilmographyId { get; set; }
+
+		[Column("filmography_type_id")]
+		public int FilmographyTypeId { get; set; }
 
 		[Column("user_id")]
 		public int UserId { get; set; }

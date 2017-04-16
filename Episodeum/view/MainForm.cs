@@ -9,6 +9,8 @@ using Episodeum.communication;
 using System.Collections.Generic;
 using Episodeum.view;
 using System.Threading;
+using Episodeum.util;
+using static Episodeum.util.ControlUtils;
 
 namespace Episodeum {
 
@@ -17,62 +19,104 @@ namespace Episodeum {
 	/// </summary>
     public partial class MainForm : Form {
 
-        public MainForm() {
-            InitializeComponent();
+		public enum PanelId {
+			SearchSeries, SavedShows
+		};
 
-			searchedSeriesListPanel.ItemClick += SearchedSeriesListPanel_ItemClick;
+		private Dictionary<PanelId, PanelData> panelsMap = new Dictionary<PanelId, PanelData>();
+
+        public MainForm() {
+
+			InitializePanelsMap();
+            InitializeComponent();
+			InitializeMenuPanel();
+			InitializeContentPanels();
 
 			App.Initialize(this);
 		}
 
-		private void SearchedSeriesListPanel_ItemClick(object sender, EventArgs e) {
-
-			// event handler is probably called with a child element,
-			// so goes up in hierarchy to the parent that needs to be handled
-			while(!(sender is SeriesListItemUserControl))
-				sender = ((Control) sender).Parent;
-
-			App.Instance.OpenSeriesDataForSaving((Series)((SeriesListItemUserControl) sender).Tag);
+		private void InitializePanelsMap() {
+			panelsMap.Add(PanelId.SearchSeries, new PanelData(new SearchSeriesPanel(this), new List<Series>()));
+			panelsMap.Add(PanelId.SavedShows, new PanelData(new SavedShowsPanel(this), new List<Series>()));
 		}
 
-		public void UpdateSearchedSeriesList(List<Series> seriesList) {
+		private void InitializeContentPanels() {
+			foreach(PanelData panelData in panelsMap.Values) {
 
-			searchedSeriesListPanel.SuspendLayout();
+				ContentPanel panel = panelData.Panel;
 
-			searchedSeriesListPanel.Clear();
-
-			foreach(Series series in seriesList) {
-
-				SeriesListItemUserControl listItem = new SeriesListItemUserControl();
-				listItem.Update(series);
-
-				searchedSeriesListPanel.Add(listItem);
+				panel.Dock = DockStyle.Fill;
+				panel.Visible = false;
+				panelContainer.Controls.Add(panel);
 			}
 
-			/*
-			foreach(Series series in seriesList) {
-
-				Console.WriteLine(series.Title);
-
-				SeriesListItemUserControl listItem = new SeriesListItemUserControl();
-				listItem.Series = series;
-
-				searchedSeriesListPanel.Controls.Add(listItem, 0, searchedSeriesListPanel.RowCount - 1);
-			}
-
-			if (searchedSeriesListPanel.RowStyles.Count > 0) {
-				int diff = searchedSeriesListPanel.Height
-					- (int) searchedSeriesListPanel.RowStyles[0].Height * searchedSeriesListPanel.RowCount;
-
-				searchedSeriesListPanel.AutoSize = diff > 0;
-			}
-			*/
-
-			this.searchedSeriesListPanel.ResumeLayout();
+			AttachPanelEventListeners();
 		}
 
-		private void searchToolsPanel_Search(string query) {
+		private void AttachPanelEventListeners() {
+
+			// attaches event listeners for search series panel
+			SearchSeriesPanel searchSeriesPanel = (SearchSeriesPanel) panelsMap[PanelId.SearchSeries].Panel;
+			searchSeriesPanel.Search += SearchSeriesPanel_Search;
+			searchSeriesPanel.SeriesClick += SearchSeriesPanel_SeriesClick;
+
+			// Don't forget to attach event listeners for new panels as well!
+		}
+
+		private void InitializeMenuPanel() {
+
+			menuPanel.MenuListItemClick += MenuPanel_MenuListItemClick;
+
+			List<MenuListItem> menuItems = new List<MenuListItem>();
+
+			// Search series menu item
+			menuItems.Add(new MenuListItem((int) PanelId.SearchSeries, "Search",
+				Properties.Resources.ic_add_circle_outline));
+
+			// Saved shows menu item
+			menuItems.Add(new MenuListItem((int) PanelId.SavedShows, "My shows",
+				Properties.Resources.ic_add_circle_outline));
+
+			menuPanel.UpdateView(menuItems);
+		}
+
+		internal void UpdatePanel(PanelId panelId, object data, bool loadPanel) {
+			panelsMap[panelId].Data = data;
+
+			if(loadPanel) LoadPanel(panelId);
+		}
+
+		private void SearchSeriesPanel_Search(string query) {
 			App.Instance.SearchSeries(query);
+		}
+
+		private void SearchSeriesPanel_SeriesClick(Series series) {
+			App.Instance.OpenSeriesDataForSaving(series);
+		}
+
+		private void MenuPanel_MenuListItemClick(object sender, EventArgs e) {
+			LoadPanel((PanelId) ((MenuListItemPanel) sender).Tag);
+		}
+
+		internal void LoadPanel(PanelId panelId) {
+
+			foreach(PanelId id in panelsMap.Keys) {
+				ContentPanel panel = panelsMap[id].Panel;
+
+				if (id == panelId) {
+					panel.UpdateView();
+					panel.Visible = true;
+				} else {
+					panel.Visible = false;
+
+				}
+			}
+
+			Invalidate();
+		}
+
+		internal object GetPanelData(ContentPanel panel) {
+			return panelsMap[panel.PanelId].Data;
 		}
 	}
 }

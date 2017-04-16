@@ -1,19 +1,32 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Episodeum.util;
 
 namespace Episodeum.view {
 	public partial class MenuPanel : UserControl {
+
+		public event EventHandler MenuListItemClick {
+			add { menuListPanel.ItemClick += value; }
+			remove { menuListPanel.ItemClick -= value; }
+		}
+
 		public MenuPanel() {
 			InitializeComponent();
+		}
 
-			//menuListPanel.Add()
+		internal void UpdateView(List<MenuListItem> menuItems) {
+
+			menuListPanel.Clear();
+
+			foreach(MenuListItem menuItem in menuItems) {
+				MenuListItemPanel listItemPanel = new MenuListItemPanel();
+				listItemPanel.UpdateView(menuItem);
+				menuListPanel.Add(listItemPanel);
+			}
+
+			Invalidate();
 		}
 	}
 }

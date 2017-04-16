@@ -16,8 +16,8 @@ namespace Episodeum.view {
 			InitializeComponent();
 		}
 
-		public void Update(Series series) {
-			seriesDataUserControl.Update(series);
+		public void UpdateView(Series series) {
+			seriesDataUserControl.UpdateView(series);
 		}
 
 	}

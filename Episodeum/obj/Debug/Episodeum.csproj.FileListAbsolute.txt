@@ -24,3 +24,6 @@ D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.ListPanel.re
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SeriesDataForm.resources
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SearchToolsPanel.resources
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.MenuPanel.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.MenuListItemPanel.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SearchSeriesPanel.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SavedShowsPanel.resources

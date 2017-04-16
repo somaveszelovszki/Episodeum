@@ -10,6 +10,7 @@ using Episodeum.communication;
 using Episodeum.database;
 using Episodeum.database.model;
 using Episodeum.view;
+using static Episodeum.MainForm;
 
 namespace Episodeum {
 
@@ -33,6 +34,20 @@ namespace Episodeum {
 		public static void Initialize(MainForm mainForm) {
 			instance = new App();
 			instance.mainForm = mainForm;
+
+			int userId = 1;
+
+			List<Series> savedShows = instance.DbManager.GetJoin<Series, FilmographyToUser>(
+				s => s.Id,
+				ftu => ftu.FilmographyId,
+				ftu => ftu.UserId == 1 && ftu.FilmographyTypeId == (int) util.Tables.Filmography_TYPE.SERIES);
+
+
+			foreach(Series s in savedShows) {
+				Console.WriteLine(s.Title);
+			}
+
+			mainForm.UpdatePanel(PanelId.SavedShows, savedShows, true);
 		}
 
 		public void printFilmographyTypes() {
@@ -54,7 +69,7 @@ namespace Episodeum {
 			Console.WriteLine("opening series data: " + series.Title);
 
 			SeriesDataForm saveSeriesDataForm = new SeriesDataForm();
-			saveSeriesDataForm.Update(series);
+			saveSeriesDataForm.UpdateView(series);
 
 
 			if (saveSeriesDataForm.ShowDialog() == DialogResult.Yes) {
@@ -63,7 +78,7 @@ namespace Episodeum {
 		}
 
 		private void ShowSearchedSeriesList(List<Series> seriesList) {
-			mainForm.UpdateSearchedSeriesList(seriesList);
+			mainForm.UpdatePanel(PanelId.SearchSeries, seriesList, false);
 		}
 
 		private void ShowSeriesSavedMessage(Series series) {

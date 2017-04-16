@@ -34,35 +34,39 @@ namespace Episodeum.view {
 			Controls.Clear();
 		}
 
-		public void AddRange(List<Control> controls) {
+		public void AddRange(List<ListItemUserControl> controls) {
 			AddRange(controls.ToArray());
 		}
 
-		public void AddRange(Control[] controls) {
-			foreach(Control control in controls)
+		public void AddRange(ListItemUserControl[] controls) {
+			foreach(ListItemUserControl control in controls)
 				Add(control);
 		}
 
-		public void Update(List<Control> controls) {
+		public void Update(List<ListItemUserControl> controls) {
 			Update(controls.ToArray());
 		}
 
-		public void Update(Control[] controls) {
+		public void Update(ListItemUserControl[] controls) {
 			Clear();
 			AddRange(controls);
 		}
 
-		public void Add(Control control) {
+		public void Add(ListItemUserControl control) {
 			Controls.Add(control);
 
 			// registers list item's children's click event handlers
 			// so that they will all call the same callback method
-			ControlUtils.RegisterAllClickEventListeners(control, ItemClick);
+			control.ItemClick += Control_ItemClick;
 
 			OnDataSetChanged();
 		}
 
-		public void Remove(Control control) {
+		private void Control_ItemClick(object sender, EventArgs e) {
+			ItemClick(sender, e);
+		}
+
+		public void Remove(ListItemUserControl control) {
 			Controls.Remove(control);
 			OnDataSetChanged();
 		}

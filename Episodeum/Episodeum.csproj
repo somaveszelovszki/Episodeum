@@ -85,8 +85,21 @@
     <Compile Include="communication\MovieDataClient.cs" />
     <Compile Include="database\DatabaseManager.cs" />
     <Compile Include="Files.cs" />
+    <Compile Include="util\MenuListItem.cs" />
     <Compile Include="util\SystemUtils.cs" />
     <Compile Include="util\Tables.cs" />
+    <Compile Include="view\ContentPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\ContentPanel.Designer.cs">
+      <DependentUpon>ContentPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\ListItemUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\ListItemUserControl.Designer.cs">
+      <DependentUpon>ListItemUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +125,12 @@
     <Compile Include="view\ListPanel.Designer.cs">
       <DependentUpon>ListPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\MenuListItemPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\MenuListItemPanel.Designer.cs">
+      <DependentUpon>MenuListItemPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\MenuPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,6 +142,18 @@
     </Compile>
     <Compile Include="view\RoundButton.Designer.cs">
       <DependentUpon>RoundButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\SavedShowsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\SavedShowsPanel.Designer.cs">
+      <DependentUpon>SavedShowsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\SearchSeriesPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\SearchSeriesPanel.Designer.cs">
+      <DependentUpon>SearchSeriesPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="view\SearchToolsPanel.cs">
       <SubType>UserControl</SubType>
@@ -148,6 +179,12 @@
     <Compile Include="view\SeriesListItemUserControl.Designer.cs">
       <DependentUpon>SeriesListItemUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\SeriesListPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="view\SeriesListPanel.Designer.cs">
+      <DependentUpon>SeriesListPanel.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="view\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,8 +201,17 @@
     <EmbeddedResource Include="view\ListPanel.resx">
       <DependentUpon>ListPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="view\MenuListItemPanel.resx">
+      <DependentUpon>MenuListItemPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\MenuPanel.resx">
       <DependentUpon>MenuPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\SavedShowsPanel.resx">
+      <DependentUpon>SavedShowsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\SearchSeriesPanel.resx">
+      <DependentUpon>SearchSeriesPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SearchToolsPanel.resx">
       <DependentUpon>SearchToolsPanel.cs</DependentUpon>

@@ -412,9 +412,9 @@ namespace Episodeum.communication {
 
 			Console.WriteLine("url: " + url);
 
-			HttpResponseMessage response = await client.GetAsync(url);			
-
 			try {
+				HttpResponseMessage response = await client.GetAsync(url);
+
 				response.EnsureSuccessStatusCode();       // throws Exception if HTTP response code is not SUCCESS
 
 				string responseJson = await response.Content.ReadAsStringAsync();

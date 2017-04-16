@@ -18,8 +18,8 @@ namespace Episodeum {
 		}
 
 
-		public void Update(Series series) {
-			headerPanel.Update(series);
+		public void UpdateView(Series series) {
+			headerPanel.UpdateView(series);
 
 			overviewLabel.Text = series.Overview;
 			imdbButton.Tag = series.ImdbId;
