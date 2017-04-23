@@ -10,6 +10,7 @@ using Episodeum.communication;
 using Episodeum.database;
 using Episodeum.database.model;
 using Episodeum.view;
+
 using static Episodeum.MainForm;
 
 namespace Episodeum {
@@ -26,28 +27,42 @@ namespace Episodeum {
 		private MainForm mainForm;
 		private Panel activePanel;
 
+		private User user;
+		public User User {
+			get {
+				return user;
+			}
+		}
+
 		private static App instance;
 		public static App Instance {
 			get { return instance; }
 		}
 
-		public static void Initialize(MainForm mainForm) {
-			instance = new App();
-			instance.mainForm = mainForm;
+		private void Init(MainForm mainForm) {
 
+			this.mainForm = mainForm;
+
+			// TODO not here
 			int userId = 1;
+			user = DbManager.Connection.Get<User>(userId);
 
-			List<Series> savedShows = instance.DbManager.GetJoin<Series, FilmographyToUser>(
+			List<Series> savedShows = DbManager.GetJoin<Series, FilmographyToUser>(
 				s => s.Id,
 				ftu => ftu.FilmographyId,
-				ftu => ftu.UserId == 1 && ftu.FilmographyTypeId == (int) util.Tables.Filmography_TYPE.SERIES);
+				ftu => ftu.UserId == 1 && ftu.FilmographyTypeId == (int) FilmographyType.Value.SERIES);
 
 
 			foreach(Series s in savedShows) {
-				Console.WriteLine(s.Title);
+				Console.WriteLine(s.Id + " " + s.Title);
 			}
 
 			mainForm.UpdatePanel(PanelId.SavedShows, savedShows, true);
+		}
+
+		public static void Initialize(MainForm mainForm) {
+			instance = new App();
+			instance.Init(mainForm);
 		}
 
 		public void printFilmographyTypes() {
@@ -62,26 +77,32 @@ namespace Episodeum {
 
 		public void SearchSeries(string query) {
 			// TODO do this in a separate thread
-			MovieDataClient.Instance.SearchAsync(query, ShowSearchedSeriesList, ShowErrorMessage);
+			new Thread(SearchSeriesThread).Start(query);
+		}
+
+		private void SearchSeriesThread(object query) {
+			MovieDataClient.Instance.SearchAsync((string) query, ShowSearchedSeriesList, ShowErrorMessage);
 		}
 
 		public void OpenSeriesDataForSaving(Series series) {
-			Console.WriteLine("opening series data: " + series.Title);
+			SaveSeriesForm saveSaveSeriesForm = new SaveSeriesForm();
+			saveSaveSeriesForm.UpdateView(series);
 
-			SeriesDataForm saveSeriesDataForm = new SeriesDataForm();
-			saveSeriesDataForm.UpdateView(series);
-
-
-			if (saveSeriesDataForm.ShowDialog() == DialogResult.Yes) {
-				MovieDataClient.Instance.SaveSeries(series.TmdbId, ShowSeriesSavedMessage, ShowErrorMessage);
+			if (saveSaveSeriesForm.ShowDialog() == DialogResult.Yes) {
+				new Thread(SaveSeriesThread).Start(series);
 			}
 		}
 
-		private void ShowSearchedSeriesList(List<Series> seriesList) {
-			mainForm.UpdatePanel(PanelId.SearchSeries, seriesList, false);
+		private void SaveSeriesThread(object series) {
+			MovieDataClient.Instance.SaveSeries(((Series)series).TmdbId, OnSeriesSaved, ShowErrorMessage);
 		}
 
-		private void ShowSeriesSavedMessage(Series series) {
+		private void ShowSearchedSeriesList(List<Series> seriesList) {
+			mainForm.UpdatePanel(PanelId.SearchSeries, seriesList, true);
+		}
+
+		private void OnSeriesSaved(Series series) {
+			mainForm.UpdatePanel(PanelId.SavedShows, series, false);
 			MessageBox.Show("Series saved: " + series.Title);
 		}
 

@@ -84,10 +84,11 @@
     <Compile Include="communication\JSONParser.cs" />
     <Compile Include="communication\MovieDataClient.cs" />
     <Compile Include="database\DatabaseManager.cs" />
+    <Compile Include="database\model\Type.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="util\MenuListItem.cs" />
     <Compile Include="util\SystemUtils.cs" />
-    <Compile Include="util\Tables.cs" />
+    <Compile Include="view\AbstractControlDescriptionProvider.cs" />
     <Compile Include="view\ContentPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -120,7 +121,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\ControlUtils.cs" />
     <Compile Include="view\ListPanel.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="view\ListPanel.Designer.cs">
       <DependentUpon>ListPanel.cs</DependentUpon>
@@ -161,17 +162,17 @@
     <Compile Include="view\SearchToolsPanel.Designer.cs">
       <DependentUpon>SearchToolsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="view\SeriesDataForm.cs">
+    <Compile Include="view\SaveSeriesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="view\SeriesDataForm.Designer.cs">
-      <DependentUpon>SeriesDataForm.cs</DependentUpon>
+    <Compile Include="view\SaveSeriesForm.Designer.cs">
+      <DependentUpon>SaveSeriesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="view\SeriesDataUserControl.cs">
+    <Compile Include="view\SaveSeriesUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="view\SeriesDataUserControl.Designer.cs">
-      <DependentUpon>SeriesDataUserControl.cs</DependentUpon>
+    <Compile Include="view\SaveSeriesUserControl.Designer.cs">
+      <DependentUpon>SaveSeriesUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="view\SeriesListItemUserControl.cs">
       <SubType>UserControl</SubType>
@@ -180,10 +181,16 @@
       <DependentUpon>SeriesListItemUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="view\SeriesListPanel.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="view\SeriesListPanel.Designer.cs">
       <DependentUpon>SeriesListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\SeriesPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\SeriesPanel.Designer.cs">
+      <DependentUpon>SeriesPanel.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="view\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -216,14 +223,17 @@
     <EmbeddedResource Include="view\SearchToolsPanel.resx">
       <DependentUpon>SearchToolsPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="view\SeriesDataForm.resx">
-      <DependentUpon>SeriesDataForm.cs</DependentUpon>
+    <EmbeddedResource Include="view\SaveSeriesForm.resx">
+      <DependentUpon>SaveSeriesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="view\SeriesDataUserControl.resx">
-      <DependentUpon>SeriesDataUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="view\SaveSeriesUserControl.resx">
+      <DependentUpon>SaveSeriesUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SeriesListItemUserControl.resx">
       <DependentUpon>SeriesListItemUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\SeriesPanel.resx">
+      <DependentUpon>SeriesPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -264,9 +274,11 @@
     <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.linux.targets'))" />
     <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets'))" />
     <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.105.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.105.0\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2\build\SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.0\build\net451\System.Data.SQLite.Core.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

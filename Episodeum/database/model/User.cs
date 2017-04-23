@@ -3,7 +3,7 @@
 namespace Episodeum.database.model {
     [Table("user")]
     public class User : Model {
-        [Column("username")]
+        [Column("username"), NotNull, Unique]
         public string Username { get; set; }
     };
 }

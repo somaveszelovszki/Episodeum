@@ -64,6 +64,22 @@ namespace Episodeum.communication {
 			return null;
 		}
 
+		private SeriesStatus.Value? ParseSeriesStatus(JObject seriesObj) {
+			string status = (string) get(seriesObj, MovieDataClient.KEY.STATUS);
+
+			if(status == null) return null;
+
+			Console.WriteLine("status: " + status);
+
+			if(status == MovieDataClient.KEY_Strings[MovieDataClient.KEY.SERIES_RETURNING])
+				return SeriesStatus.Value.CONTINUING;
+
+			if(status == MovieDataClient.KEY_Strings[MovieDataClient.KEY.SERIES_ENDED])
+				return SeriesStatus.Value.ENDED;
+
+			throw new ArgumentException();
+		}
+
 		private string ParseTitle(JObject filmographyObj) {
 
 			JToken title;
@@ -136,8 +152,7 @@ namespace Episodeum.communication {
 			if((value = get(seriesObj, MovieDataClient.KEY.EPISODE_RUN_TIME)) != null)
 				series.EpisodeRunTime = (int) ((JArray) value).First;
 
-			if((value = get(seriesObj, MovieDataClient.KEY.STATUS)) != null)
-				series.StatusId = (int) Tables.GetSeriesStatusByName((string) value);
+			series.setStatus(ParseSeriesStatus(seriesObj));
 
 			return series;
 		}

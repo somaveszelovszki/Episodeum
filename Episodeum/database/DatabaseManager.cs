@@ -9,6 +9,7 @@ using Episodeum.util;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
+
 namespace Episodeum.database {
 
 	/// <summary>
@@ -31,25 +32,92 @@ namespace Episodeum.database {
 			}
 		}
 
-		internal bool SaveFilmography(Filmography entity) {
+		internal bool SaveFilmography<T>(T entity, bool newFilmographyToUser) where T : Filmography, new() {
 
 			Filmography existing = null;
-			
-			if (entity is Series)
-				existing = Connection.Table<Series>().Where(f => f.TmdbId == entity.TmdbId).First();
+			FilmographyType.Value type;
 
-			if(entity is Season)
-				existing = Connection.Table<Season>().Where(f => f.TmdbId == entity.TmdbId).First();
+			TableQuery<T> query = Connection.Table<T>().Where(f => f.TmdbId == entity.TmdbId);
 
-			if(entity is Episode)
-				existing = Connection.Table<Episode>().Where(f => f.TmdbId == entity.TmdbId).First();
+			existing = query.Count() > 0 ? query.First() : null;
 
-			if (existing == null)
-				return Connection.Insert(entity) > 0;
-			else {
-				entity.Id = existing.Id;
-				return Connection.Update(entity) > 0;
+			if (entity is Series) {
+				type = FilmographyType.Value.SERIES;
+			} else if(entity is Season) {
+				type = FilmographyType.Value.SEASON;
+			} else if(entity is Episode) {
+				type = FilmographyType.Value.EPISODE;
+			} else {
+				throw new NotSupportedException();
 			}
+
+			if(existing == null) {
+				if(Connection.Insert(entity) == 0)
+					return false;
+			} else {
+				entity.Id = existing.Id;
+				if(Connection.Update(entity) == 0)
+					return false;
+			}
+
+			if(newFilmographyToUser) {
+				FilmographyToUser ftu = new FilmographyToUser();
+				ftu.FilmographyId = entity.getId();
+				ftu.FilmographyTypeId = (int) type;
+				ftu.UserId = App.Instance.User.getId();
+				ftu.Finished = false;
+				ftu.SecondsWatched = 0;
+
+				ftu.PrintValues();
+
+				TableQuery<FilmographyToUser> ftuQuery = Connection.Table<FilmographyToUser>().Where(
+						f => f.UserId == ftu.UserId
+						&& f.FilmographyId == ftu.FilmographyId
+						&& f.FilmographyTypeId == ftu.FilmographyTypeId);
+
+				FilmographyToUser existingFtu = ftuQuery.Count() > 0 ? ftuQuery.First() : null;
+
+				if(existingFtu == null) {
+					if(Connection.Insert(ftu) == 0)
+						return false;
+				} else {
+					ftu.Id = existingFtu.Id;
+					if(Connection.Update(ftu) == 0)
+						return false;
+				}
+			}
+
+			return true;
+		}
+
+		internal T GetTypeByName<T>(string name) where T : model.Type, new() {
+			return Connection.Table<T>().Where(t => t.Name == name).First<T>();
+		}
+
+		internal Episode GetNextEpisode(Series series) {
+			series.PrintValues();
+			string query =
+				"select e.* from episode e"
+				+ " join (select e._id, min(e.episode_number) from episode e"
+					+ " join filmography_to_user ftu on ftu.filmography_id = e._id"
+					+ " join (select s._id, min(s.season_number) from season s"
+									+ " join filmography_to_user ftu on ftu.filmography_id = s._id"
+									+ " where ftu.filmography_type_id = " + (int) FilmographyType.Value.SEASON
+									+ " and ftu.finished = 0"
+									+ " and ftu.user_id = " + App.Instance.User.getId()
+									+ " and s.series_id = " + series.getId()
+									+ " and s.season_number > 0"
+					+ ") s on e.season_id = s._id"
+					+ " where ftu.filmography_type_id = " + (int) FilmographyType.Value.EPISODE
+					+ " and ftu.finished = 0"
+					+ " and ftu.user_id = " + App.Instance.User.getId()
+				+ ") e2 on e._id = e2._id;";
+
+			Console.WriteLine("query: " + query);
+
+			List<Episode> tq = Connection.Query<Episode>(query, new object[] { });
+
+			return tq.Count() > 0 ? tq.First() : null;
 		}
 
 		/// <summary>
@@ -70,7 +138,7 @@ namespace Episodeum.database {
 			string tableA = GetTableName<A>();
 			string tableB = GetTableName<B>();
 
-			string query = string.Format("select * from {0} join {1} on {0}.{2} = {1}.{3} where {4}",
+			string query = string.Format("select {0}.* from {0} join {1} on {0}.{2} = {1}.{3} where {4}",
 				tableA,
 				tableB,
 				GetPropColumn(propertyA),
@@ -97,7 +165,7 @@ namespace Episodeum.database {
 		/// </summary>
 		/// <param name="classType"></param>
 		/// <returns></returns>
-		private string GetTableName(Type classType) {
+		private string GetTableName(System.Type classType) {
 
 			return ((TableAttribute) classType
 				.GetCustomAttributes(typeof(TableAttribute), true).FirstOrDefault()).Name;
@@ -120,7 +188,7 @@ namespace Episodeum.database {
 		/// <param name="classType"></param>
 		/// <param name="propName"></param>
 		/// <returns></returns>
-		private string GetColumnName(Type classType, string propName) {
+		private string GetColumnName(System.Type classType, string propName) {
 			return ((ColumnAttribute) classType.GetProperty(propName)
 				.GetCustomAttributes(typeof(ColumnAttribute), true).FirstOrDefault()).Name;
 		}

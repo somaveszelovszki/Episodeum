@@ -31,20 +31,29 @@ namespace Episodeum.view {
 			panelId = PanelId.SearchSeries;
 		}
 
+		private delegate void UpdateViewDelegate();
+
 		internal override void UpdateView() {
-			seriesListPanel.SuspendLayout();
 
-			seriesListPanel.Clear();
+			if(IsDisposed) return;
 
-			foreach(Series series in (List<Series>) mainForm.GetPanelData(this)) {
+			if(InvokeRequired)
+				Invoke(new UpdateViewDelegate(UpdateView));
+			else {
+				seriesListPanel.SuspendLayout();
 
-				SeriesListItemUserControl listItem = new SeriesListItemUserControl();
-				listItem.UpdateView(series);
+				seriesListPanel.Clear();
 
-				seriesListPanel.Add(listItem);
+				foreach(Series series in (List<Series>) mainForm.GetPanelData(this)) {
+
+					SeriesListItemUserControl listItem = new SeriesListItemUserControl();
+					listItem.UpdateView(series);
+
+					seriesListPanel.Add(listItem);
+				}
+
+				seriesListPanel.ResumeLayout();
 			}
-
-			seriesListPanel.ResumeLayout();
 		}
 	}
 }

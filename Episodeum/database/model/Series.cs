@@ -1,15 +1,14 @@
 ﻿using System;
-using Episodeum.util;
 using SQLite;
 
 namespace Episodeum.database.model {
     [Table("series")]
     public class Series : Filmography {
 
-        [Column("number_of_seasons")]
+        [Column("number_of_seasons"), NotNull]
         public int NumberOfSeasons { get; set; }
 
-        [Column("number_of_episodes")]
+        [Column("number_of_episodes"), NotNull]
         public int NumberOfEpisodes { get; set; }
 
         [Column("status_id"), NotNull]
@@ -24,6 +23,10 @@ namespace Episodeum.database.model {
 			Console.WriteLine("NumberOfEpisodes:\t" + NumberOfEpisodes);
 			Console.WriteLine("StatusId:\t\t" + StatusId);
 			Console.WriteLine("EpisodeRunTime:\t" + EpisodeRunTime);
+		}
+
+		public void setStatus(SeriesStatus.Value? status) {
+			StatusId = status != null ? (int) status : 0;
 		}
 	}
 }

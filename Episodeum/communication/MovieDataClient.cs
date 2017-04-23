@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Episodeum.database.model;
 using Episodeum.util;
 using static Episodeum.util.SystemUtils;
-using static Episodeum.util.Tables;
 
 namespace Episodeum.communication {
 
@@ -82,6 +81,8 @@ namespace Episodeum.communication {
 			SEASONS,
 			SEASON_X,
 			EPISODES,
+			SERIES_ENDED,
+			SERIES_RETURNING,
 
 			// URL paths
 			SEARCH,
@@ -127,6 +128,8 @@ namespace Episodeum.communication {
 			{ KEY.SEASONS, "seasons" },
 			{ KEY.SEASON_X, "season/{0}" },
 			{ KEY.EPISODES, "episodes" },
+			{ KEY.SERIES_ENDED, "Ended" },
+			{ KEY.SERIES_RETURNING, "Returning series" },
 
 			{ KEY.SEARCH, "search" },
 			{ KEY.MOVIE, "movie" },
@@ -243,13 +246,13 @@ namespace Episodeum.communication {
 
 			public ViewURL_TMDB_Builder() : base(TMDB_BASE_URL) { }
 
-			public string PrepareURL(Filmography_TYPE type, int tmdbId) {
+			public string PrepareURL(FilmographyType.Value type, int tmdbId) {
 
 				switch (type) {
-					case Filmography_TYPE.MOVIE:
+					case FilmographyType.Value.MOVIE:
 						AppendPath(KEY.MOVIE);
 						break;
-					case Filmography_TYPE.SERIES:
+					case FilmographyType.Value.SERIES:
 						AppendPath(KEY.TV);
 						break;
 					default:
@@ -279,17 +282,17 @@ namespace Episodeum.communication {
 
 			public SearchURLBuilder() : base(API_BASE_URL) { }
 
-			public string PrepareURL(Filmography_TYPE type, Dictionary<KEY, object> parameters) {
+			public string PrepareURL(FilmographyType.Value type, Dictionary<KEY, object> parameters) {
 
 				AppendPath(KEY.SEARCH);
 
 				switch (type) {
-					case Filmography_TYPE.MOVIE:
+					case FilmographyType.Value.MOVIE:
 						throw new NotSupportedException();
 
-					case Filmography_TYPE.SERIES:
-					case Filmography_TYPE.SEASON:
-					case Filmography_TYPE.EPISODE:
+					case FilmographyType.Value.SERIES:
+					case FilmographyType.Value.SEASON:
+					case FilmographyType.Value.EPISODE:
 
 						// TODO
 						AppendPath(KEY.TV);
@@ -306,26 +309,26 @@ namespace Episodeum.communication {
 
 			public GetURLBuilder() : base(API_BASE_URL) { }
 
-			public string PrepareURL(Filmography_TYPE type, Dictionary<KEY, object> parameters) {
+			public string PrepareURL(FilmographyType.Value type, Dictionary<KEY, object> parameters) {
 
 				switch(type) {
-					case Filmography_TYPE.MOVIE:
+					case FilmographyType.Value.MOVIE:
 						// TODO
 						throw new NotImplementedException();
 
-					case Filmography_TYPE.SERIES:
+					case FilmographyType.Value.SERIES:
 						AppendPath(KEY.TV);
 						AppendPath((int) parameters[KEY.TMDB_ID]);
 						break;
 
-					case Filmography_TYPE.SEASON:
+					case FilmographyType.Value.SEASON:
 						AppendPath(KEY.TV);
 						AppendPath((int) parameters[KEY.TMDB_ID]);
 						AppendPath(KEY.SEASON);
 						AppendPath((int) parameters[KEY.SEASON_NUMBER]);
 						break;
 
-					case Filmography_TYPE.EPISODE:
+					case FilmographyType.Value.EPISODE:
 						AppendPath(KEY.TV);
 						AppendPath((int) parameters[KEY.TMDB_ID]);
 						AppendPath(KEY.SEASON);
@@ -408,7 +411,7 @@ namespace Episodeum.communication {
 			parameters.Add(KEY.QUERY, query);
 			parameters.Add(KEY.LANGUAGE, language);
 
-			string url = new SearchURLBuilder().PrepareURL(Filmography_TYPE.SERIES, parameters);
+			string url = new SearchURLBuilder().PrepareURL(FilmographyType.Value.SERIES, parameters);
 
 			Console.WriteLine("url: " + url);
 
@@ -443,7 +446,7 @@ namespace Episodeum.communication {
 			SystemUtils.OpenUrl(url);
 		}
 
-		public void ViewOnTMDB(Filmography_TYPE type, int tmdbId) {
+		public void ViewOnTMDB(FilmographyType.Value type, int tmdbId) {
 
 			if(tmdbId == 0) return;
 
@@ -479,26 +482,33 @@ namespace Episodeum.communication {
 
 			series.PrintValues();
 
-			App.Instance.DbManager.SaveFilmography(series);
-			Console.WriteLine("series inserted successfully");
+			try {
+				App.Instance.DbManager.SaveFilmography(series, true);
+				Console.WriteLine("series inserted successfully");
 
-			Console.WriteLine("series id: " + series.getId());
+				Console.WriteLine("series id: " + series.getId());
 
-			List<Season> seasons = parser.ParseSeasons(series.getId());
+				List<Season> seasons = parser.ParseSeasons(series.getId());
 
-			foreach(Season season in seasons) {
-				season.PrintValues();
-				App.Instance.DbManager.SaveFilmography(season);
-				Console.WriteLine("season id: " + season.getId());
+				foreach(Season season in seasons) {
+					season.PrintValues();
+					App.Instance.DbManager.SaveFilmography(season, true);
+					Console.WriteLine("season id: " + season.getId());
 
+				}
+
+				List<Episode> episodes = parser.ParseEpisodes(seasons);
+
+				foreach(Episode episode in episodes) {
+					episode.PrintValues();
+					App.Instance.DbManager.SaveFilmography(episode, true);
+				}
+			} catch(Exception e) {
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
 			}
 
-			List<Episode> episodes = parser.ParseEpisodes(seasons);
-
-			foreach(Episode episode in episodes) {
-				episode.PrintValues();
-				App.Instance.DbManager.SaveFilmography(episode);
-			}
+			
 
 			return series;
 		}
@@ -517,7 +527,7 @@ namespace Episodeum.communication {
 			Dictionary<KEY, object> parameters = new Dictionary<KEY, object>();
 			parameters.Add(KEY.TMDB_ID, tmdbId);
 			parameters.Add(KEY.LANGUAGE, language);
-			string url = new GetURLBuilder().PrepareURL(Filmography_TYPE.SERIES, parameters);
+			string url = new GetURLBuilder().PrepareURL(FilmographyType.Value.SERIES, parameters);
 			Console.WriteLine("url: " + url);
 
 			// gets answer from server
@@ -530,11 +540,18 @@ namespace Episodeum.communication {
 
 			if(!parser.isSuccessful()) throw new UnsuccessfulGetException();
 
-			// parses season numbers from response object
-			Series series = await SaveSeries(tmdbId, language, parser.ParseSeasonNumbers());
+			try {
+				// parses season numbers from response object
+				Series series = await SaveSeries(tmdbId, language, parser.ParseSeasonNumbers());
 
-			OnSeriesSavedResponse(series);
+				OnSeriesSavedResponse(series);
 
+			} catch(Exception e) {
+				Console.WriteLine(e.Message);
+
+				Console.WriteLine(e.StackTrace);
+			}
+			
 			try {
 				// TODO put code here
 

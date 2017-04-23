@@ -8,7 +8,7 @@ namespace Episodeum.database.model {
 		public int? Id { get; set; }
 
 		public virtual void PrintValues() {
-			Console.WriteLine("Id:\t\t" + Id);
+			Console.WriteLine("Id:\t\t" + getId());
 		}
 
 		public int getId() {

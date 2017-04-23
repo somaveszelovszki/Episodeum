@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Episodeum.util;
 
 namespace Episodeum.view {
-	public partial class ListPanel : Panel {
+	public partial class ListPanel : UserControl {
 
 		public enum ORIENTATION {
 			HORIZONTAL, VERTICAL
@@ -52,14 +52,23 @@ namespace Episodeum.view {
 			AddRange(controls);
 		}
 
+		private delegate void AddControlDelegate(ListItemUserControl control);
+
 		public void Add(ListItemUserControl control) {
-			Controls.Add(control);
 
-			// registers list item's children's click event handlers
-			// so that they will all call the same callback method
-			control.ItemClick += Control_ItemClick;
+			if(IsDisposed) return;
 
-			OnDataSetChanged();
+			if(InvokeRequired)
+				Invoke(new AddControlDelegate(Add), control);
+			else {
+				Controls.Add(control);
+
+				// registers list item's children's click event handlers
+				// so that they will all call the same callback method
+				control.ItemClick += Control_ItemClick;
+
+				OnDataSetChanged();
+			}
 		}
 
 		private void Control_ItemClick(object sender, EventArgs e) {

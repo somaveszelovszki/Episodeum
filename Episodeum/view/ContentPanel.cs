@@ -10,7 +10,8 @@ using System.Windows.Forms;
 using static Episodeum.MainForm;
 
 namespace Episodeum.view {
-	public abstract partial class ContentPanel : UserControl {
+	//[TypeDescriptionProvider(typeof(AbstractControlDescriptionProvider<ContentPanel, UserControl>))]
+	public partial class ContentPanel : UserControl {
 
 		protected MainForm mainForm;
 
@@ -21,10 +22,16 @@ namespace Episodeum.view {
 			}
 		}
 
-		public ContentPanel(MainForm mainForm) {
-			this.mainForm = mainForm;
+		public ContentPanel() {
 		}
 
-		internal abstract void UpdateView();
+		public ContentPanel(MainForm mainForm) {
+			this.mainForm = mainForm;
+			InitializeComponent();
+		}
+
+		internal virtual void UpdateView() {
+			throw new InvalidOperationException();
+		}
 	}
 }

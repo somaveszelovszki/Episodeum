@@ -20,7 +20,7 @@ namespace Episodeum {
     public partial class MainForm : Form {
 
 		public enum PanelId {
-			SearchSeries, SavedShows
+			SearchSeries, SavedShows, Series
 		};
 
 		private Dictionary<PanelId, PanelData> panelsMap = new Dictionary<PanelId, PanelData>();
@@ -38,6 +38,7 @@ namespace Episodeum {
 		private void InitializePanelsMap() {
 			panelsMap.Add(PanelId.SearchSeries, new PanelData(new SearchSeriesPanel(this), new List<Series>()));
 			panelsMap.Add(PanelId.SavedShows, new PanelData(new SavedShowsPanel(this), new List<Series>()));
+			panelsMap.Add(PanelId.Series, new PanelData(new SeriesPanel(this), null));
 		}
 
 		private void InitializeContentPanels() {
@@ -60,7 +61,15 @@ namespace Episodeum {
 			searchSeriesPanel.Search += SearchSeriesPanel_Search;
 			searchSeriesPanel.SeriesClick += SearchSeriesPanel_SeriesClick;
 
+			// attaches event listeners for saved shows panel
+			SavedShowsPanel savedShowsPanel = (SavedShowsPanel) panelsMap[PanelId.SavedShows].Panel;
+			savedShowsPanel.SeriesClick += SavedShowsPanel_SeriesClick;
+
 			// Don't forget to attach event listeners for new panels as well!
+		}
+
+		private void SavedShowsPanel_SeriesClick(Series series) {
+			UpdatePanel(PanelId.Series, series, true);
 		}
 
 		private void InitializeMenuPanel() {
@@ -98,21 +107,34 @@ namespace Episodeum {
 			LoadPanel((PanelId) ((MenuListItemPanel) sender).Tag);
 		}
 
-		internal void LoadPanel(PanelId panelId) {
+		private void HidePanels() {
+			LoadPanel(null);
+		}
 
-			foreach(PanelId id in panelsMap.Keys) {
-				ContentPanel panel = panelsMap[id].Panel;
 
-				if (id == panelId) {
-					panel.UpdateView();
-					panel.Visible = true;
-				} else {
-					panel.Visible = false;
+		private delegate void LoadPanelDelegate(PanelId? panelId);
 
+		internal void LoadPanel(PanelId? panelId) {
+
+			if(IsDisposed) return;
+
+			if(InvokeRequired)
+				Invoke(new LoadPanelDelegate(LoadPanel), panelId);
+			else {
+				foreach(PanelId id in panelsMap.Keys) {
+					ContentPanel panel = panelsMap[id].Panel;
+
+					if(id == panelId) {
+						panel.UpdateView();
+						panel.Visible = true;
+					} else {
+						panel.Visible = false;
+
+					}
 				}
-			}
 
-			Invalidate();
+				Invalidate();
+			}
 		}
 
 		internal object GetPanelData(ContentPanel panel) {

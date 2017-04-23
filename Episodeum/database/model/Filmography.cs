@@ -1,5 +1,5 @@
-﻿using SQLite;
-using System;
+﻿using System;
+using SQLite;
 
 namespace Episodeum.database.model {
     public class Filmography : Model {
