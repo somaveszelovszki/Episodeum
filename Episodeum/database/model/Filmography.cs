@@ -2,7 +2,7 @@
 using SQLite;
 
 namespace Episodeum.database.model {
-    public class Filmography : Model {
+    public abstract class Filmography : Model {
 		[Column("title")]
 		public string Title { get; set; }
 
@@ -28,6 +28,10 @@ namespace Episodeum.database.model {
 			ReleaseDate = releaseDate != null ? ((DateTime) releaseDate).ToShortDateString() : null;
 		}
 
+		public DateTime? GetReleaseDate() {
+			return ReleaseDate != null ? (DateTime?) DateTime.Parse(ReleaseDate) : null;
+		}
+
 		public override void PrintValues() {
 			base.PrintValues();
 			Console.WriteLine("Title:\t\t" + Title);
@@ -37,6 +41,16 @@ namespace Episodeum.database.model {
 			Console.WriteLine("VoteAverage:\t\t" + VoteAverage);
 			Console.WriteLine("ReleaseDate:\t\t" + ReleaseDate);
 			Console.WriteLine("PosterPath:\t\t" + PosterPath);
+		}
+
+		[Ignore]
+		public abstract FilmographyToUser ToUser { get; }
+
+		[Ignore]
+		public string Path {
+			get {
+				return ToUser.Path;
+			}
 		}
 	}
 }

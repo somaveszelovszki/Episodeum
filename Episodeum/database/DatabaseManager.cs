@@ -67,6 +67,7 @@ namespace Episodeum.database {
 				ftu.UserId = App.Instance.User.getId();
 				ftu.Finished = false;
 				ftu.SecondsWatched = 0;
+				ftu.SetLastActivityDate(DateTime.Now);
 
 				ftu.PrintValues();
 
@@ -92,6 +93,15 @@ namespace Episodeum.database {
 
 		internal T GetTypeByName<T>(string name) where T : model.Type, new() {
 			return Connection.Table<T>().Where(t => t.Name == name).First<T>();
+		}
+
+		internal List<Series> GetSavedShows() {
+			return GetJoin<Series, FilmographyToUser>(
+				s => s.Id,
+				ftu => ftu.FilmographyId,
+				"B.user_id=" + App.Instance.User.getId()
+				+ " and B.filmography_type_id=" + (int) FilmographyType.Value.SERIES
+				+ " order by B.last_activity_date DESC");
 		}
 
 		internal Episode GetNextEpisode(Series series) {
@@ -130,7 +140,7 @@ namespace Episodeum.database {
 		/// <param name="whereB"></param>
 		/// <returns></returns>
 		internal List<A> GetJoin<A, B>(Expression<Func<A, object>> propertyA, Expression<Func<B, object>> propertyB,
-			Expression<Func<B, bool>> whereB)
+			string where)
 			
 			where A : Model, new()
 			where B : Model, new() {
@@ -138,12 +148,12 @@ namespace Episodeum.database {
 			string tableA = GetTableName<A>();
 			string tableB = GetTableName<B>();
 
-			string query = string.Format("select {0}.* from {0} join {1} on {0}.{2} = {1}.{3} where {4}",
+			string query = string.Format("select A.* from {0} A join {1} B on A.{2} = B.{3} where {4}",
 				tableA,
 				tableB,
 				GetPropColumn(propertyA),
 				GetPropColumn(propertyB),
-				GetSqlText(whereB));
+				where);
 
 			Console.WriteLine("query: " + query);
 
@@ -199,14 +209,40 @@ namespace Episodeum.database {
 		/// <typeparam name="C"></typeparam>
 		/// <param name="exp"></param>
 		/// <returns></returns>
-		private string GetSqlText<C>(Expression<Func<C, bool>> exp) where C : Model {
+		private string GetSqlText<A, B>(Expression<Func<A, B, bool>> exp)
+			where A : Model
+			where B : Model {
 			string expBody = exp.Body.ToString();
 
-			string className = exp.Parameters[0].Name;
-			string tableName = GetTableName(exp.Parameters[0].Type);
+			
+
+			string classNameA = exp.Parameters[0].Name;
+			string tableNameA = GetTableName(exp.Parameters[0].Type);
+
+			string classNameB = exp.Parameters[1].Name;
+			string tableNameB = GetTableName(exp.Parameters[1].Type);
+
+			expBody = ReplacePropertyValues<A>(expBody, classNameA, tableNameA);
+			expBody = ReplacePropertyValues<B>(expBody, classNameB, tableNameB);
+
+			return expBody;
+		}
+
+		private object GetValue(MemberExpression member) {
+			var objectMember = Expression.Convert(member, typeof(object));
+
+			var getterLambda = Expression.Lambda<Func<object>>(objectMember);
+
+			var getter = getterLambda.Compile();
+
+			return getter();
+		}
+
+		private string ReplacePropertyValues<T>(string query, string className, string tableName)
+			where T : Model {
 
 			// gets property column names with their indexes in the string where they need to replace property name
-			Dictionary<int, string> propColumns = GetPropColumns<C>(expBody, className);
+			Dictionary<int, string> propColumns = GetPropColumns<T>(query, className);
 
 			int indexDiff = 0;
 
@@ -217,7 +253,7 @@ namespace Episodeum.database {
 				// replacing a property name with a longer/shorter column name increases/decreases it
 				int newIndex = index + indexDiff;
 
-				int nextSpaceIndex = expBody.IndexOf(" ", newIndex);
+				int nextSpaceIndex = query.IndexOf(" ", newIndex);
 				int propertyNameLength = nextSpaceIndex - newIndex;
 				int columnNameLength = propColumns[index].Length;
 
@@ -225,13 +261,12 @@ namespace Episodeum.database {
 				indexDiff += columnNameLength - propertyNameLength;
 
 				// replaces property name at given index with column name
-				expBody = expBody.Substring(0, newIndex)
+				query = query.Substring(0, newIndex)
 					+ propColumns[index]
-					+ expBody.Substring(newIndex + propertyNameLength);
+					+ query.Substring(newIndex + propertyNameLength);
 			}
 
-			// replaces class name with table name
-			return expBody.Replace(className + ".", tableName + ".")
+			return query.Replace(className + ".", tableName + ".")
 							 .Replace("AndAlso", "and").Replace("==", "=");
 		}
 

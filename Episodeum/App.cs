@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,9 @@ using System.Windows.Forms;
 using Episodeum.communication;
 using Episodeum.database;
 using Episodeum.database.model;
+using Episodeum.Properties;
 using Episodeum.view;
-
+using static Episodeum.communication.MovieDataClient;
 using static Episodeum.MainForm;
 
 namespace Episodeum {
@@ -47,11 +49,7 @@ namespace Episodeum {
 			int userId = 1;
 			user = DbManager.Connection.Get<User>(userId);
 
-			List<Series> savedShows = DbManager.GetJoin<Series, FilmographyToUser>(
-				s => s.Id,
-				ftu => ftu.FilmographyId,
-				ftu => ftu.UserId == 1 && ftu.FilmographyTypeId == (int) FilmographyType.Value.SERIES);
-
+			List<Series> savedShows = DbManager.GetSavedShows();
 
 			foreach(Series s in savedShows) {
 				Console.WriteLine(s.Id + " " + s.Title);
@@ -93,6 +91,19 @@ namespace Episodeum {
 			}
 		}
 
+		internal void WatchEpisode(Episode episode) {
+			if(Settings.Default.OpenMediaInApp) {
+				MediaPlayerForm mediaPLayerForm = new MediaPlayerForm();
+				mediaPLayerForm.Show();
+				mediaPLayerForm.UpdateView(episode);
+			} else {
+				Process watchProc = new Process();
+				watchProc.StartInfo.FileName = Files.GetEpisodeFile(episode);
+				watchProc.EnableRaisingEvents = true;
+				watchProc.Start();
+			}
+		}
+
 		private void SaveSeriesThread(object series) {
 			MovieDataClient.Instance.SaveSeries(((Series)series).TmdbId, OnSeriesSaved, ShowErrorMessage);
 		}
@@ -102,8 +113,28 @@ namespace Episodeum {
 		}
 
 		private void OnSeriesSaved(Series series) {
-			mainForm.UpdatePanel(PanelId.SavedShows, series, false);
-			MessageBox.Show("Series saved: " + series.Title);
+			if(mainForm.IsDisposed) return;
+
+			if (mainForm.InvokeRequired) {
+				mainForm.Invoke(new OnSeriesSavedResponseDelegate(OnSeriesSaved), series);
+			} else {
+				FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+				folderBrowserDialog.Description = "Please select series folder.";
+				if(folderBrowserDialog.ShowDialog() == DialogResult.OK) {
+					string rootFolder = folderBrowserDialog.SelectedPath;
+
+					Console.WriteLine(rootFolder);
+
+					FilmographyToUser seriesToUser = series.ToUser;
+					seriesToUser.Path = rootFolder;
+					
+					DbManager.Connection.Update(seriesToUser);
+
+					Console.WriteLine("path: " + series.ToUser.Path);
+				}
+				mainForm.UpdatePanel(PanelId.SavedShows, DbManager.GetSavedShows(), true);
+				MessageBox.Show("Series saved: " + series.Title);
+			}
 		}
 
 		private void ShowErrorMessage(object sender, ErrorEventArgs e) {

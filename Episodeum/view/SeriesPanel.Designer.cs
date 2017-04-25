@@ -30,7 +30,7 @@
 			this.overviewLabel = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.staticNextEpisodeLabel = new System.Windows.Forms.Label();
-			this.watchNowButton = new System.Windows.Forms.Button();
+			this.watchEpisodeButton = new System.Windows.Forms.Button();
 			this.nextEpisodeNumberLabel = new System.Windows.Forms.Label();
 			this.seasonsTabPage = new System.Windows.Forms.TabPage();
 			this.tabControl.SuspendLayout();
@@ -109,7 +109,7 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.Controls.Add(this.staticNextEpisodeLabel, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.watchNowButton, 2, 0);
+			this.tableLayoutPanel1.Controls.Add(this.watchEpisodeButton, 2, 0);
 			this.tableLayoutPanel1.Controls.Add(this.nextEpisodeNumberLabel, 1, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 53);
@@ -132,20 +132,20 @@
 			this.staticNextEpisodeLabel.Text = "Next episode:";
 			this.staticNextEpisodeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// watchNowButton
+			// watchEpisodeButton
 			// 
-			this.watchNowButton.AutoSize = true;
-			this.watchNowButton.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.watchNowButton.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.watchNowButton.Dock = System.Windows.Forms.DockStyle.Left;
-			this.watchNowButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.watchNowButton.Location = new System.Drawing.Point(308, 5);
-			this.watchNowButton.Margin = new System.Windows.Forms.Padding(5);
-			this.watchNowButton.Name = "watchNowButton";
-			this.watchNowButton.Size = new System.Drawing.Size(107, 30);
-			this.watchNowButton.TabIndex = 2;
-			this.watchNowButton.Text = "Watch now!";
-			this.watchNowButton.UseVisualStyleBackColor = false;
+			this.watchEpisodeButton.AutoSize = true;
+			this.watchEpisodeButton.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.watchEpisodeButton.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.watchEpisodeButton.Dock = System.Windows.Forms.DockStyle.Left;
+			this.watchEpisodeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.watchEpisodeButton.Location = new System.Drawing.Point(308, 5);
+			this.watchEpisodeButton.Margin = new System.Windows.Forms.Padding(5);
+			this.watchEpisodeButton.Name = "watchEpisodeButton";
+			this.watchEpisodeButton.Size = new System.Drawing.Size(107, 30);
+			this.watchEpisodeButton.TabIndex = 2;
+			this.watchEpisodeButton.Text = "Watch now";
+			this.watchEpisodeButton.UseVisualStyleBackColor = false;
 			// 
 			// nextEpisodeNumberLabel
 			// 
@@ -197,7 +197,7 @@
 		private System.Windows.Forms.Label overviewLabel;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.Label staticNextEpisodeLabel;
-		private System.Windows.Forms.Button watchNowButton;
+		private System.Windows.Forms.Button watchEpisodeButton;
 		private System.Windows.Forms.Label nextEpisodeNumberLabel;
 	}
 }

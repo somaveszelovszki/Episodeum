@@ -28,6 +28,18 @@ namespace Episodeum.database.model {
 		[Column("path")]
 		public string Path { get; set; }
 
+		[Column("last_activity_date")]
+		public string LastActivityDate { get; set; }
+
+		public void SetLastActivityDate(DateTime? lastActivityDate) {
+			LastActivityDate = lastActivityDate != null ? ((DateTime) lastActivityDate).ToShortDateString() : null;
+		}
+
+		public DateTime? GetLastActivityDate() {
+			return LastActivityDate != null ? (DateTime?) DateTime.Parse(LastActivityDate) : null;
+		}
+
+
 		public override void PrintValues() {
 			base.PrintValues();
 

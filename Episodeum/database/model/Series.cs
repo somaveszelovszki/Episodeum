@@ -28,5 +28,18 @@ namespace Episodeum.database.model {
 		public void setStatus(SeriesStatus.Value? status) {
 			StatusId = status != null ? (int) status : 0;
 		}
+
+		[Ignore]
+		public override FilmographyToUser ToUser {
+			get {
+				PrintValues();
+				return App.Instance.DbManager.GetJoin<FilmographyToUser, Series>(
+					ftu => ftu.FilmographyId,
+					s => s.Id,
+					"A.user_id=" + App.Instance.User.getId()
+					+ " and A.filmography_type_id=" + (int) FilmographyType.Value.SERIES
+					+ " and A.filmography_id=" + Id)[0];
+			}
+		}
 	}
 }

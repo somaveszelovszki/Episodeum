@@ -129,7 +129,7 @@ namespace Episodeum.communication {
 			{ KEY.SEASON_X, "season/{0}" },
 			{ KEY.EPISODES, "episodes" },
 			{ KEY.SERIES_ENDED, "Ended" },
-			{ KEY.SERIES_RETURNING, "Returning series" },
+			{ KEY.SERIES_RETURNING, "Returning Series" },
 
 			{ KEY.SEARCH, "search" },
 			{ KEY.MOVIE, "movie" },

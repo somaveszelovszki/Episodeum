@@ -12,5 +12,12 @@ namespace Episodeum.util {
 		}
 
 		public class UnsuccessfulGetException : Exception {}
+
+		public static string GetTime(TimeSpan timeSpan) {
+			return string.Format("{0:D2}:{1:D2}:{2:D2}",
+						timeSpan.Hours,
+						timeSpan.Minutes,
+						timeSpan.Seconds);
+		}
 	}
 }

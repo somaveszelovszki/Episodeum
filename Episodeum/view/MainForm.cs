@@ -65,7 +65,15 @@ namespace Episodeum {
 			SavedShowsPanel savedShowsPanel = (SavedShowsPanel) panelsMap[PanelId.SavedShows].Panel;
 			savedShowsPanel.SeriesClick += SavedShowsPanel_SeriesClick;
 
+			// attaches event listeners for series panel
+			SeriesPanel seriesPanel = (SeriesPanel) panelsMap[PanelId.Series].Panel;
+			seriesPanel.WatchEpisodeButtonClick += SeriesPanel_WatchEpisodeButtonClick;
+
 			// Don't forget to attach event listeners for new panels as well!
+		}
+
+		private void SeriesPanel_WatchEpisodeButtonClick(Episode episode) {
+			App.Instance.WatchEpisode(episode);
 		}
 
 		private void SavedShowsPanel_SeriesClick(Series series) {

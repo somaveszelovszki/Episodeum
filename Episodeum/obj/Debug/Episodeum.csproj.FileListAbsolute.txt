@@ -28,3 +28,9 @@ D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SavedShowsPa
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SaveSeriesForm.resources
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.SaveSeriesUserControl.resources
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SeriesPanel.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\bin\Debug\Interop.AXVLC.dll
+D:\Dropbox\C# projects\Episodeum\Episodeum\bin\Debug\AxInterop.AXVLC.dll
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Interop.AXVLC.dll
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\AxInterop.AXVLC.dll
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.csproj.ResolveComReference.cache
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.MediaPlayerForm.resources

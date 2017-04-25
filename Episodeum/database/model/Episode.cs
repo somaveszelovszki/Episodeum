@@ -26,5 +26,17 @@ namespace Episodeum.database.model {
 				SeasonId = value.getId();
 			}
 		}
+
+		[Ignore]
+		public override FilmographyToUser ToUser {
+			get {
+				return App.Instance.DbManager.GetJoin<FilmographyToUser, Episode>(
+					ftu => ftu.FilmographyId,
+					e => e.Id,
+					"A.user_id=" + App.Instance.User.getId()
+					+ " and A.filmography_type_id=" + (int) FilmographyType.Value.EPISODE
+					+ " and A.filmography_id=" + Id)[0];
+			}
+		}
 	}
 }
