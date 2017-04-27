@@ -87,13 +87,26 @@
     <Compile Include="database\model\Type.cs" />
     <Compile Include="util\Files.cs" />
     <Compile Include="util\MenuListItem.cs" />
+    <Compile Include="util\Preference.cs" />
     <Compile Include="util\SystemUtils.cs" />
     <Compile Include="view\AbstractControlDescriptionProvider.cs" />
+    <Compile Include="view\CheckboxListItemUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\CheckboxListItemUserControl.Designer.cs">
+      <DependentUpon>CheckboxListItemUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\ContentPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="view\ContentPanel.Designer.cs">
       <DependentUpon>ContentPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\FileChooser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\FileChooser.Designer.cs">
+      <DependentUpon>FileChooser.cs</DependentUpon>
     </Compile>
     <Compile Include="view\ListItemUserControl.cs">
       <SubType>UserControl</SubType>
@@ -198,6 +211,24 @@
     <Compile Include="view\SeriesPanel.Designer.cs">
       <DependentUpon>SeriesPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\SettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\SettingsPanel.Designer.cs">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="view\StringPreferenceListItemUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\StringPreferenceListItemUserControl.Designer.cs">
+      <DependentUpon>StringPreferenceListItemUserControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="view\CheckboxListItemUserControl.resx">
+      <DependentUpon>CheckboxListItemUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\FileChooser.resx">
+      <DependentUpon>FileChooser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="view\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -243,6 +274,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\SeriesPanel.resx">
       <DependentUpon>SeriesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\SettingsPanel.resx">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\StringPreferenceListItemUserControl.resx">
+      <DependentUpon>StringPreferenceListItemUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

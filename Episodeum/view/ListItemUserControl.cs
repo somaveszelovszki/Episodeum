@@ -18,15 +18,17 @@ namespace Episodeum.view {
 			Cursor = Cursors.Hand;
 		}
 
-		internal void RegisterEventListeners() {
+		internal virtual void RegisterEventListeners() {
 			ControlUtils.RegisterAllClickEventListeners(this, ListItemUserControl_Click);
 		}
 
-		private void ListItemUserControl_Click(object sender, EventArgs e) {
+		protected void ListItemUserControl_Click(object sender, EventArgs e) {
 			while(!(sender is ListItemUserControl))
 				sender = ((Control) sender).Parent;
 
 			ItemClick(sender, e);
 		}
+
+		internal virtual void UpdateView() { }
+		}
 	}
-}

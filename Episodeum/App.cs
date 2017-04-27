@@ -97,10 +97,26 @@ namespace Episodeum {
 				mediaPLayerForm.Show();
 				mediaPLayerForm.UpdateView(episode);
 			} else {
-				Process watchProc = new Process();
-				watchProc.StartInfo.FileName = Files.GetEpisodeFile(episode);
-				watchProc.EnableRaisingEvents = true;
-				watchProc.Start();
+
+				string mediaPlayer = Settings.Default.ExternalMediaPlayerPath;
+
+				if(mediaPlayer != null) {
+					Process.Start(mediaPlayer, "\"" + Files.GetEpisodeFile(episode) + "\"");
+
+					Thread.Sleep(1000);
+
+					switch(MessageBox.Show("Have you finished the episode?", "", MessageBoxButtons.YesNo)) {
+						case DialogResult.Yes:
+							FilmographyToUser toUser = episode.ToUser;
+							toUser.Finished = true;
+							DbManager.Connection.Update(toUser);
+
+							mainForm.UpdatePanel(PanelId.Series, episode.Season.Series, true);
+							break;
+					}
+				} else
+					MessageBox.Show("Please select external media player in Settings page.");
+
 			}
 		}
 

@@ -11,6 +11,7 @@ using Episodeum.view;
 using System.Threading;
 using Episodeum.util;
 using static Episodeum.util.ControlUtils;
+using Episodeum.Properties;
 
 namespace Episodeum {
 
@@ -20,7 +21,7 @@ namespace Episodeum {
     public partial class MainForm : Form {
 
 		public enum PanelId {
-			SearchSeries, SavedShows, Series
+			SearchSeries, SavedShows, Series, Settings
 		};
 
 		private Dictionary<PanelId, PanelData> panelsMap = new Dictionary<PanelId, PanelData>();
@@ -39,6 +40,7 @@ namespace Episodeum {
 			panelsMap.Add(PanelId.SearchSeries, new PanelData(new SearchSeriesPanel(this), new List<Series>()));
 			panelsMap.Add(PanelId.SavedShows, new PanelData(new SavedShowsPanel(this), new List<Series>()));
 			panelsMap.Add(PanelId.Series, new PanelData(new SeriesPanel(this), null));
+			panelsMap.Add(PanelId.Settings, new PanelData(new SettingsPanel(this), null));
 		}
 
 		private void InitializeContentPanels() {
@@ -94,6 +96,10 @@ namespace Episodeum {
 			menuItems.Add(new MenuListItem((int) PanelId.SavedShows, "My shows",
 				Properties.Resources.ic_add_circle_outline));
 
+			// Saved shows menu item
+			menuItems.Add(new MenuListItem((int) PanelId.Settings, "Settings",
+				Properties.Resources.ic_add_circle_outline));
+
 			menuPanel.UpdateView(menuItems);
 		}
 
@@ -147,6 +153,13 @@ namespace Episodeum {
 
 		internal object GetPanelData(ContentPanel panel) {
 			return panelsMap[panel.PanelId].Data;
+		}
+
+		protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
+
+			Settings.Default.Save();
+
+			base.OnClosing(e);
 		}
 	}
 }

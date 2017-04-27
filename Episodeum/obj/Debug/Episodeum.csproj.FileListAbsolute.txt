@@ -34,3 +34,7 @@ D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Interop.AXVLC.dll
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\AxInterop.AXVLC.dll
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.csproj.ResolveComReference.cache
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.MediaPlayerForm.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SettingsPanel.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.CheckboxListItemUserControl.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.FileChooser.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.StringPreferenceListItemUserControl.resources

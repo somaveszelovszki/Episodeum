@@ -45,11 +45,7 @@ namespace Episodeum.view {
 				seriesListPanel.Clear();
 
 				foreach(Series series in (List<Series>) mainForm.GetPanelData(this)) {
-
-					SeriesListItemUserControl listItem = new SeriesListItemUserControl();
-					listItem.UpdateView(series);
-
-					seriesListPanel.Add(listItem);
+					seriesListPanel.Add(new SeriesListItemUserControl(series));
 				}
 
 				seriesListPanel.ResumeLayout();

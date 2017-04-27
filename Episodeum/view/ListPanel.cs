@@ -26,6 +26,18 @@ namespace Episodeum.view {
 
 		public int DividerSize { get; set; }
 
+		public int Count {
+			get {
+				return Controls.Count;
+			}
+		}
+
+		public ListItemUserControl this[int index] {
+			get {
+				return (ListItemUserControl) Controls[index];
+			}
+		}
+
 		public ListPanel() {
 			InitializeComponent();
 		}

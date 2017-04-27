@@ -34,5 +34,17 @@ namespace Episodeum.Properties {
                 this["OpenMediaInApp"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExternalMediaPlayerPath {
+            get {
+                return ((string)(this["ExternalMediaPlayerPath"]));
+            }
+            set {
+                this["ExternalMediaPlayerPath"] = value;
+            }
+        }
     }
 }

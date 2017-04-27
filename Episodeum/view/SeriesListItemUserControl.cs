@@ -14,17 +14,30 @@ namespace Episodeum {
 	public partial class SeriesListItemUserControl : ListItemUserControl {
 
 		public SeriesListItemUserControl() {
+			Initialize(null);
+		}
+
+		public SeriesListItemUserControl(Series series) {
+			Initialize(series);
+		}
+
+		private void Initialize(Series series) {
 			InitializeComponent();
 
 			RegisterEventListeners();
 
 			Anchor = AnchorStyles.Left | AnchorStyles.Right;
+
+			if(series != null) UpdateView(series);
 		}
 
 		public void UpdateView(Series series) {
 			Tag = series;
+
 			titleLabel.Text = series.Title;
 			ratingLabel.Text = series.VoteAverage != 0 ? series.VoteAverage.ToString() : "N/A";
+
+			Invalidate();
 		}
 	}
 }
