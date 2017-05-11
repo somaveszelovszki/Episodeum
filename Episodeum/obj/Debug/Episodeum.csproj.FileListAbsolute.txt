@@ -38,3 +38,4 @@ D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.SettingsPane
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.CheckboxListItemUserControl.resources
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.FileChooser.resources
 D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.StringPreferenceListItemUserControl.resources
+D:\Dropbox\C# projects\Episodeum\Episodeum\obj\Debug\Episodeum.view.StatisticsPanel.resources

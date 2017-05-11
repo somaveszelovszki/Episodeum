@@ -23,7 +23,7 @@ namespace Episodeum.database.model {
 				return App.Instance.DbManager.Connection.Get<Season>(SeasonId);
 			}
 			set {
-				SeasonId = value.getId();
+				SeasonId = value.GetId();
 			}
 		}
 
@@ -33,7 +33,7 @@ namespace Episodeum.database.model {
 				return App.Instance.DbManager.GetJoin<FilmographyToUser, Episode>(
 					ftu => ftu.FilmographyId,
 					e => e.Id,
-					"A.user_id=" + App.Instance.User.getId()
+					"A.user_id=" + App.Instance.User.GetId()
 					+ " and A.filmography_type_id=" + (int) FilmographyType.Value.EPISODE
 					+ " and A.filmography_id=" + Id)[0];
 			}

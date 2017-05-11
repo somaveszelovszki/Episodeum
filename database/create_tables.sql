@@ -55,8 +55,8 @@ CREATE TABLE "filmography" (
 	`title`	TEXT,
 	`poster_path`	TEXT,
 	`release_date`	TEXT,
-	`type`	INTEGER NOT NULL,
-	FOREIGN KEY(`type`) REFERENCES filmography_type(`_id`)
+	`type_id`	INTEGER NOT NULL,
+	FOREIGN KEY(`type_id`) REFERENCES filmography_type(`_id`)
 );
 CREATE TABLE `episode` (
 	`_id`	INTEGER,

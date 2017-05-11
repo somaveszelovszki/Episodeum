@@ -95,7 +95,7 @@ namespace Episodeum.view {
 		private void OnDataSetChanged() {
 			UpdatePositions();
 
-			Invalidate();
+			UpdateView();
 		}
 
 
@@ -130,6 +130,10 @@ namespace Episodeum.view {
 				}
 
 			}
+		}
+
+		internal void UpdateView() {
+			Invalidate();
 		}
 	}
 }

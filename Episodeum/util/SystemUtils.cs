@@ -19,5 +19,16 @@ namespace Episodeum.util {
 						timeSpan.Minutes,
 						timeSpan.Seconds);
 		}
+
+		public static double Map(double value, double oldMin, double oldMax, double newMin, double newMax) {
+			if(value < Math.Min(oldMin, oldMax) || value > Math.Max(oldMin, oldMax))
+				throw new ArgumentException();
+
+			return newMin + (value - oldMin) / (oldMax - oldMin) * (newMax - newMin);
+		}
+
+		public static string DateToShortString(DateTime date) {
+			return string.Format("{0}. {1}.", date.Month, date.Day);
+		}
 	}
 }

@@ -237,7 +237,7 @@ namespace Episodeum.communication {
 			foreach(Season season in seasons) {
 				JToken seasonObj = get(jsonObject, string.Format(MovieDataClient.KEY_Strings[MovieDataClient.KEY.SEASON_X], season.SeasonNumber));
 				foreach(JObject episodeObj in get(seasonObj, MovieDataClient.KEY.EPISODES))
-					episodes.Add(ParseEpisode(season.getId(), episodeObj));
+					episodes.Add(ParseEpisode(season.GetId(), episodeObj));
 			}
 
 			return episodes;

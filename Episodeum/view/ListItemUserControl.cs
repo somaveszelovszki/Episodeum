@@ -29,6 +29,8 @@ namespace Episodeum.view {
 			ItemClick(sender, e);
 		}
 
-		internal virtual void UpdateView() { }
+		internal virtual void UpdateView() {
+			throw new InvalidOperationException();
 		}
 	}
+}

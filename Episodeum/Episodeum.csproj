@@ -84,8 +84,10 @@
     <Compile Include="communication\JSONParser.cs" />
     <Compile Include="communication\MovieDataClient.cs" />
     <Compile Include="database\DatabaseManager.cs" />
+    <Compile Include="database\model\UserStatistics.cs" />
     <Compile Include="database\model\Type.cs" />
     <Compile Include="util\Files.cs" />
+    <Compile Include="util\IGraphable.cs" />
     <Compile Include="util\MenuListItem.cs" />
     <Compile Include="util\Preference.cs" />
     <Compile Include="util\SystemUtils.cs" />
@@ -108,16 +110,22 @@
     <Compile Include="view\FileChooser.Designer.cs">
       <DependentUpon>FileChooser.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\GraphControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="view\GraphControl.Designer.cs">
+      <DependentUpon>GraphControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\ListItemUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="view\ListItemUserControl.Designer.cs">
       <DependentUpon>ListItemUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="view\MainForm.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="view\MainForm.Designer.cs">
+    <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="database\model\Episode.cs" />
@@ -139,10 +147,10 @@
     <Compile Include="view\ListPanel.Designer.cs">
       <DependentUpon>ListPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="view\MediaPlayerForm.cs">
+    <Compile Include="MediaPlayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="view\MediaPlayerForm.Designer.cs">
+    <Compile Include="MediaPlayerForm.Designer.cs">
       <DependentUpon>MediaPlayerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="view\MenuListItemPanel.cs">
@@ -181,10 +189,10 @@
     <Compile Include="view\SearchToolsPanel.Designer.cs">
       <DependentUpon>SearchToolsPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="view\SaveSeriesForm.cs">
+    <Compile Include="SaveSeriesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="view\SaveSeriesForm.Designer.cs">
+    <Compile Include="SaveSeriesForm.Designer.cs">
       <DependentUpon>SaveSeriesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="view\SaveSeriesUserControl.cs">
@@ -217,6 +225,12 @@
     <Compile Include="view\SettingsPanel.Designer.cs">
       <DependentUpon>SettingsPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="view\StatisticsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="view\StatisticsPanel.Designer.cs">
+      <DependentUpon>StatisticsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="view\StringPreferenceListItemUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -229,7 +243,7 @@
     <EmbeddedResource Include="view\FileChooser.resx">
       <DependentUpon>FileChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="view\MainForm.resx">
+    <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -245,7 +259,7 @@
     <EmbeddedResource Include="view\ListPanel.resx">
       <DependentUpon>ListPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="view\MediaPlayerForm.resx">
+    <EmbeddedResource Include="MediaPlayerForm.resx">
       <DependentUpon>MediaPlayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="view\MenuListItemPanel.resx">
@@ -263,7 +277,7 @@
     <EmbeddedResource Include="view\SearchToolsPanel.resx">
       <DependentUpon>SearchToolsPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="view\SaveSeriesForm.resx">
+    <EmbeddedResource Include="SaveSeriesForm.resx">
       <DependentUpon>SaveSeriesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="view\SaveSeriesUserControl.resx">
@@ -277,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="view\SettingsPanel.resx">
       <DependentUpon>SettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="view\StatisticsPanel.resx">
+      <DependentUpon>StatisticsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="view\StringPreferenceListItemUserControl.resx">
       <DependentUpon>StringPreferenceListItemUserControl.cs</DependentUpon>

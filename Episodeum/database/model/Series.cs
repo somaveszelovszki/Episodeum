@@ -36,7 +36,7 @@ namespace Episodeum.database.model {
 				return App.Instance.DbManager.GetJoin<FilmographyToUser, Series>(
 					ftu => ftu.FilmographyId,
 					s => s.Id,
-					"A.user_id=" + App.Instance.User.getId()
+					"A.user_id=" + App.Instance.User.GetId()
 					+ " and A.filmography_type_id=" + (int) FilmographyType.Value.SERIES
 					+ " and A.filmography_id=" + Id)[0];
 			}

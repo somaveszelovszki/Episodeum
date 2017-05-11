@@ -24,11 +24,7 @@ namespace Episodeum.view {
 		}
 
 		internal override void UpdateView() {
-
-			for(int i = 0; i < preferenceList.Count; i++)
-				((ListItemUserControl) preferenceList[i]).UpdateView();
-
-			Invalidate();
+			preferenceList.UpdateView();
 		}
 	}
 }

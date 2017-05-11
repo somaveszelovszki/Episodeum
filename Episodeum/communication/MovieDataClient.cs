@@ -486,14 +486,14 @@ namespace Episodeum.communication {
 				App.Instance.DbManager.SaveFilmography(series, true);
 				Console.WriteLine("series inserted successfully");
 
-				Console.WriteLine("series id: " + series.getId());
+				Console.WriteLine("series id: " + series.GetId());
 
-				List<Season> seasons = parser.ParseSeasons(series.getId());
+				List<Season> seasons = parser.ParseSeasons(series.GetId());
 
 				foreach(Season season in seasons) {
 					season.PrintValues();
 					App.Instance.DbManager.SaveFilmography(season, true);
-					Console.WriteLine("season id: " + season.getId());
+					Console.WriteLine("season id: " + season.GetId());
 
 				}
 

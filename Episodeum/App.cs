@@ -12,6 +12,7 @@ using Episodeum.database;
 using Episodeum.database.model;
 using Episodeum.Properties;
 using Episodeum.view;
+using SQLite;
 using static Episodeum.communication.MovieDataClient;
 using static Episodeum.MainForm;
 
@@ -107,10 +108,37 @@ namespace Episodeum {
 
 					switch(MessageBox.Show("Have you finished the episode?", "", MessageBoxButtons.YesNo)) {
 						case DialogResult.Yes:
+
+							// marks episode finished and sets seconds watched (not punctual)
 							FilmographyToUser toUser = episode.ToUser;
 							toUser.Finished = true;
+							toUser.SecondsWatched = episode.Season.Series.EpisodeRunTime * 60;	// in seconds
 							DbManager.Connection.Update(toUser);
 
+							// if episode is last ine is season, marks season finished
+							if (DbManager.IsLastEpisodeInSeason(episode)) {
+								FilmographyToUser sToUser = episode.Season.ToUser;
+								sToUser.Finished = true;
+								DbManager.Connection.Update(sToUser);
+							}
+
+							// updates user statistics
+							string date = DateTime.Today.ToShortDateString();
+							TableQuery<UserStatistics> query = DbManager.Connection.Table<UserStatistics>()
+								.Where(us => us.UserId == User.Id && us.Date == date);
+							UserStatistics stat = query != null && query.Count() > 0 ? query.First() : null;
+
+							if(stat == null) {
+								stat = new UserStatistics();
+								stat.UserId = User.GetId();
+								stat.SetDate(DateTime.Today);
+								stat.TimeWatching = 0;
+							}
+
+							stat.TimeWatching += toUser.SecondsWatched;
+							DbManager.Connection.InsertOrReplace(stat);
+
+							// udpates series panel (new next episode)
 							mainForm.UpdatePanel(PanelId.Series, episode.Season.Series, true);
 							break;
 					}

@@ -41,7 +41,7 @@ namespace Episodeum.database {
 
 			existing = query.Count() > 0 ? query.First() : null;
 
-			if (entity is Series) {
+			if(entity is Series) {
 				type = FilmographyType.Value.SERIES;
 			} else if(entity is Season) {
 				type = FilmographyType.Value.SEASON;
@@ -62,9 +62,9 @@ namespace Episodeum.database {
 
 			if(newFilmographyToUser) {
 				FilmographyToUser ftu = new FilmographyToUser();
-				ftu.FilmographyId = entity.getId();
+				ftu.FilmographyId = entity.GetId();
 				ftu.FilmographyTypeId = (int) type;
-				ftu.UserId = App.Instance.User.getId();
+				ftu.UserId = App.Instance.User.GetId();
 				ftu.Finished = false;
 				ftu.SecondsWatched = 0;
 				ftu.SetLastActivityDate(DateTime.Now);
@@ -95,13 +95,31 @@ namespace Episodeum.database {
 			return Connection.Table<T>().Where(t => t.Name == name).First<T>();
 		}
 
+		internal List<UserStatistics> GetUserStatistics() {
+			return Connection.Table<UserStatistics>().Where(us => us.UserId == App.Instance.User.Id).ToList();
+		}
+
 		internal List<Series> GetSavedShows() {
 			return GetJoin<Series, FilmographyToUser>(
 				s => s.Id,
 				ftu => ftu.FilmographyId,
-				"B.user_id=" + App.Instance.User.getId()
+				"B.user_id=" + App.Instance.User.GetId()
 				+ " and B.filmography_type_id=" + (int) FilmographyType.Value.SERIES
 				+ " order by B.last_activity_date DESC");
+		}
+
+		internal bool IsLastEpisodeInSeason(Episode episode) {
+			string query = "select e.* from episode e "
+				+ "join (select e._id, max(e.episode_number) from episode e "
+					+ "where e.season_id = " + episode.SeasonId
+				+ ") e2 "
+				+ "where e._id = e2._id;";
+
+			Console.WriteLine("query: " + query);
+
+			List<Episode> tq = Connection.Query<Episode>(query, new object[] { });
+
+			return tq.Count() > 0 ? tq.First().Id == episode.Id : false;
 		}
 
 		internal Episode GetNextEpisode(Series series) {
@@ -114,13 +132,13 @@ namespace Episodeum.database {
 									+ " join filmography_to_user ftu on ftu.filmography_id = s._id"
 									+ " where ftu.filmography_type_id = " + (int) FilmographyType.Value.SEASON
 									+ " and ftu.finished = 0"
-									+ " and ftu.user_id = " + App.Instance.User.getId()
-									+ " and s.series_id = " + series.getId()
+									+ " and ftu.user_id = " + App.Instance.User.GetId()
+									+ " and s.series_id = " + series.GetId()
 									+ " and s.season_number > 0"
 					+ ") s on e.season_id = s._id"
 					+ " where ftu.filmography_type_id = " + (int) FilmographyType.Value.EPISODE
 					+ " and ftu.finished = 0"
-					+ " and ftu.user_id = " + App.Instance.User.getId()
+					+ " and ftu.user_id = " + App.Instance.User.GetId()
 				+ ") e2 on e._id = e2._id;";
 
 			Console.WriteLine("query: " + query);

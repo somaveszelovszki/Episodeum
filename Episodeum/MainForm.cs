@@ -21,7 +21,7 @@ namespace Episodeum {
     public partial class MainForm : Form {
 
 		public enum PanelId {
-			SearchSeries, SavedShows, Series, Settings
+			SearchSeries, SavedShows, Series, Statistics, Settings
 		};
 
 		private Dictionary<PanelId, PanelData> panelsMap = new Dictionary<PanelId, PanelData>();
@@ -40,6 +40,7 @@ namespace Episodeum {
 			panelsMap.Add(PanelId.SearchSeries, new PanelData(new SearchSeriesPanel(this), new List<Series>()));
 			panelsMap.Add(PanelId.SavedShows, new PanelData(new SavedShowsPanel(this), new List<Series>()));
 			panelsMap.Add(PanelId.Series, new PanelData(new SeriesPanel(this), null));
+			panelsMap.Add(PanelId.Statistics, new PanelData(new StatisticsPanel(this), null));
 			panelsMap.Add(PanelId.Settings, new PanelData(new SettingsPanel(this), null));
 		}
 
@@ -90,15 +91,19 @@ namespace Episodeum {
 
 			// Search series menu item
 			menuItems.Add(new MenuListItem((int) PanelId.SearchSeries, "Search",
-				Properties.Resources.ic_add_circle_outline));
+				Resources.ic_add_circle_outline));
 
 			// Saved shows menu item
 			menuItems.Add(new MenuListItem((int) PanelId.SavedShows, "My shows",
-				Properties.Resources.ic_add_circle_outline));
+				Resources.ic_add_circle_outline));
+
+			// Statistics menu item
+			menuItems.Add(new MenuListItem((int) PanelId.Statistics, "Statistics",
+				Resources.ic_add_circle_outline));
 
 			// Saved shows menu item
 			menuItems.Add(new MenuListItem((int) PanelId.Settings, "Settings",
-				Properties.Resources.ic_add_circle_outline));
+				Resources.ic_add_circle_outline));
 
 			menuPanel.UpdateView(menuItems);
 		}
