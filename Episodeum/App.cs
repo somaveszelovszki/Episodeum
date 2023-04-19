@@ -101,47 +101,58 @@ namespace Episodeum {
 				string mediaPlayer = Settings.Default.ExternalMediaPlayerPath;
 
 				if(mediaPlayer != null) {
-					Process.Start(mediaPlayer, "\"" + Files.GetEpisodeFile(episode) + "\"");
+					string file = Files.GetEpisodeFile(episode);
 
-					Thread.Sleep(1000);
+					if (file != null)
+					{
+                        Process.Start(mediaPlayer, "\"" + file + "\"");
 
-					switch(MessageBox.Show("Have you finished the episode?", "", MessageBoxButtons.YesNo)) {
-						case DialogResult.Yes:
+                        Thread.Sleep(1000);
 
-							// marks episode finished and sets seconds watched (not punctual)
-							FilmographyToUser toUser = episode.ToUser;
-							toUser.Finished = true;
-							toUser.SecondsWatched = episode.Season.Series.EpisodeRunTime * 60;	// in seconds
-							DbManager.Connection.Update(toUser);
+                        switch (MessageBox.Show("Have you finished the episode?", "", MessageBoxButtons.YesNo))
+                        {
+                            case DialogResult.Yes:
 
-							// if episode is last ine is season, marks season finished
-							if (DbManager.IsLastEpisodeInSeason(episode)) {
-								FilmographyToUser sToUser = episode.Season.ToUser;
-								sToUser.Finished = true;
-								DbManager.Connection.Update(sToUser);
-							}
+                                // marks episode finished and sets seconds watched (not punctual)
+                                FilmographyToUser toUser = episode.ToUser;
+                                toUser.Finished = true;
+                                toUser.SecondsWatched = episode.Season.Series.EpisodeRunTime * 60;  // in seconds
+                                DbManager.Connection.Update(toUser);
 
-							// updates user statistics
-							string date = DateTime.Today.ToShortDateString();
-							TableQuery<UserStatistics> query = DbManager.Connection.Table<UserStatistics>()
-								.Where(us => us.UserId == User.Id && us.Date == date);
-							UserStatistics stat = query != null && query.Count() > 0 ? query.First() : null;
+                                // if episode is last ine is season, marks season finished
+                                if (DbManager.IsLastEpisodeInSeason(episode))
+                                {
+                                    FilmographyToUser sToUser = episode.Season.ToUser;
+                                    sToUser.Finished = true;
+                                    DbManager.Connection.Update(sToUser);
+                                }
 
-							if(stat == null) {
-								stat = new UserStatistics();
-								stat.UserId = User.GetId();
-								stat.SetDate(DateTime.Today);
-								stat.TimeWatching = 0;
-							}
+                                // updates user statistics
+                                string date = DateTime.Today.ToShortDateString();
+                                TableQuery<UserStatistics> query = DbManager.Connection.Table<UserStatistics>()
+                                    .Where(us => us.UserId == User.Id && us.Date == date);
+                                UserStatistics stat = query != null && query.Count() > 0 ? query.First() : null;
 
-							stat.TimeWatching += toUser.SecondsWatched;
-							DbManager.Connection.InsertOrReplace(stat);
+                                if (stat == null)
+                                {
+                                    stat = new UserStatistics();
+                                    stat.UserId = User.GetId();
+                                    stat.SetDate(DateTime.Today);
+                                    stat.TimeWatching = 0;
+                                }
 
-							// udpates series panel (new next episode)
-							mainForm.UpdatePanel(PanelId.Series, episode.Season.Series, true);
-							break;
-					}
-				} else
+                                stat.TimeWatching += toUser.SecondsWatched;
+                                DbManager.Connection.InsertOrReplace(stat);
+
+                                // udpates series panel (new next episode)
+                                mainForm.UpdatePanel(PanelId.Series, episode.Season.Series, true);
+                                break;
+                        }
+                    } else
+                        MessageBox.Show("Could not find the next episode on your PC.");
+
+
+                } else
 					MessageBox.Show("Please select external media player in Settings page.");
 
 			}

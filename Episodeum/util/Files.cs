@@ -85,6 +85,8 @@ namespace Episodeum {
 
 			string seriesDir = season.Series.ToUser.Path;
 
+			if (seriesDir == null) return null;
+
 			// selects directory from parent's children that matches the season number
 			List<string> results = GetFilesByIndex(Directory.GetDirectories(seriesDir).ToList(),
 				FilmographyType.Value.SEASON, season.SeasonNumber);
@@ -96,8 +98,10 @@ namespace Episodeum {
 
 			string seasonDir = GetSeasonDirectory(episode.Season);
 
-			// selects directory from parent's children that matches the season number
-			List<string> results = GetFilesByIndex(Directory.GetFileSystemEntries(seasonDir).ToList(),
+            if (seasonDir == null) return null;
+
+            // selects directory from parent's children that matches the season number
+            List<string> results = GetFilesByIndex(Directory.GetFileSystemEntries(seasonDir).ToList(),
 				FilmographyType.Value.EPISODE, episode.EpisodeNumber);
 
 			return results != null && results.Count > 0 ? results[0] : null;

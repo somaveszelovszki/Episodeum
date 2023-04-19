@@ -22,8 +22,11 @@ namespace Episodeum.view {
 
 			string filePath = Files.GetEpisodeFile(episode);
 
-			axVLCPlugin2.playlist.add("file:///" + filePath);
-			axVLCPlugin2.playlist.play();
+			if (filePath != null)
+			{
+                axVLCPlugin2.playlist.add("file:///" + filePath);
+                axVLCPlugin2.playlist.play();
+            }
 		}
 	}
 }
