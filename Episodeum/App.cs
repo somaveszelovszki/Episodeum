@@ -28,7 +28,6 @@ namespace Episodeum {
 		public DatabaseManager DbManager { get; }
 
 		private MainForm mainForm;
-		private Panel activePanel;
 
 		private User user;
 		public User User {

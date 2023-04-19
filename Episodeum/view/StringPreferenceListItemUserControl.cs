@@ -47,7 +47,7 @@ namespace Episodeum.view {
 			UpdateView();
 		}
 
-		internal void UpdateView() {
+		internal override void UpdateView() {
 			Preference<string> pref = (Preference<string>) Tag;
 			if(pref == null) return;
 

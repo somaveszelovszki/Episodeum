@@ -81,8 +81,6 @@
 
 		#endregion
 
-		private System.Windows.Forms.TextBox seriesSearchTextBox;
-		private System.Windows.Forms.Button seriesSearchButton;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.TextBox searchTextBox;
 		private System.Windows.Forms.Button searchButton;
