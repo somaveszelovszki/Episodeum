@@ -437,8 +437,6 @@ namespace Episodeum.communication {
 
 			if(String.IsNullOrEmpty(imdbId)) return;
 
-			string language = "en-US";
-
 			string url = new ViewURL_IMDb_Builder().PrepareURL(imdbId);
 
 			Console.WriteLine("url: " + url);
@@ -449,8 +447,6 @@ namespace Episodeum.communication {
 		public void ViewOnTMDB(FilmographyType.Value type, int tmdbId) {
 
 			if(tmdbId == 0) return;
-
-			string language = "en-US";
 
 			string url = new ViewURL_TMDB_Builder().PrepareURL(type, tmdbId);
 
