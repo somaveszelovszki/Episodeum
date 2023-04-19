@@ -16,9 +16,7 @@ namespace Episodeum.database {
 	/// Handles a database connection.
 	/// </summary>
 	public class DatabaseManager {
-		private static readonly string DB_PATH = @"D:\Dropbox\C# projects\Episodeum\database\episodeum.sqlite";
-
-		private static readonly int VERSION = 1;
+		private static readonly string DB_PATH = @"../../../database/episodeum.sqlite";
 
 		public SQLiteConnection Connection { get; }
 
