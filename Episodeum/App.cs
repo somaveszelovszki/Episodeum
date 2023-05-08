@@ -20,7 +20,7 @@ namespace Episodeum {
 
 	/// <summary>
 	/// Responsible for application logic.
-	/// 
+	///
 	/// This is a Singleton class.
 	/// </summary>
 	public class App {
@@ -100,7 +100,7 @@ namespace Episodeum {
 
 				string mediaPlayer = Settings.Default.ExternalMediaPlayerPath;
 
-				if(mediaPlayer != null) {
+				if(mediaPlayer != "") {
 					string file = Files.GetEpisodeFile(episode);
 
 					if (file != null)
@@ -181,7 +181,7 @@ namespace Episodeum {
 
 					FilmographyToUser seriesToUser = series.ToUser;
 					seriesToUser.Path = rootFolder;
-					
+
 					DbManager.Connection.Update(seriesToUser);
 
 					Console.WriteLine("path: " + series.ToUser.Path);
